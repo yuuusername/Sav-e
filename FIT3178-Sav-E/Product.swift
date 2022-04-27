@@ -8,5 +8,12 @@
 import UIKit
 
 class Product: NSObject {
+    var productName: String?
+    var productPrice: Int?
+    var productSupermarket: Supermarket?
+}
 
+enum Supermarket: Int {
+    case coles = 0
+    case woolworths = 1
 }

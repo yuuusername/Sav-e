@@ -14,6 +14,9 @@
 		A842DC6E2818F98E00285445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A842DC6D2818F98E00285445 /* Assets.xcassets */; };
 		A842DC712818F98E00285445 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A842DC6F2818F98E00285445 /* LaunchScreen.storyboard */; };
 		A842DC7928190B1300285445 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7828190B1300285445 /* Product.swift */; };
+		A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */; };
+		A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */; };
+		A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		A842DC702818F98E00285445 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A842DC722818F98E00285445 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A842DC7828190B1300285445 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryListTableViewController.swift; sourceTree = "<group>"; };
+		A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProductsTableViewController.swift; sourceTree = "<group>"; };
+		A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,14 +64,17 @@
 		A842DC632818F98C00285445 /* FIT3178-Sav-E */ = {
 			isa = PBXGroup;
 			children = (
+				A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */,
+				A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */,
+				A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */,
 				A842DC642818F98C00285445 /* AppDelegate.swift */,
 				A842DC662818F98C00285445 /* SceneDelegate.swift */,
 				A842DC682818F98C00285445 /* ViewController.swift */,
+				A842DC7828190B1300285445 /* Product.swift */,
 				A842DC6A2818F98C00285445 /* Main.storyboard */,
 				A842DC6D2818F98E00285445 /* Assets.xcassets */,
 				A842DC6F2818F98E00285445 /* LaunchScreen.storyboard */,
 				A842DC722818F98E00285445 /* Info.plist */,
-				A842DC7828190B1300285445 /* Product.swift */,
 			);
 			path = "FIT3178-Sav-E";
 			sourceTree = "<group>";
@@ -142,7 +151,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A842DC692818F98C00285445 /* ViewController.swift in Sources */,
+				A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */,
 				A842DC7928190B1300285445 /* Product.swift in Sources */,
+				A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */,
+				A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */,
 				A842DC652818F98C00285445 /* AppDelegate.swift in Sources */,
 				A842DC672818F98C00285445 /* SceneDelegate.swift in Sources */,
 			);
