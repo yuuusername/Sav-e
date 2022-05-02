@@ -7,10 +7,21 @@
 
 import UIKit
 
-class AllProductsTableViewController: UITableViewController {
+class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating {
 
     override func viewDidLoad() {
         createDefaultProducts()
+        filteredProducts = allProducts
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search All Products"
+        navigationItem.searchController = searchController
+        
+        // This view controller decides how the search controller is presented
+        definesPresentationContext = true
+        
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
@@ -18,6 +29,22 @@ class AllProductsTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text?.lowercased() else {
+            return
+        }
+        if searchText.count > 0 {
+            filteredProducts = allProducts.filter({(product:Product) -> Bool in
+                return (product.productName?.lowercased().contains(searchText) ?? false)
+            })
+        } else {
+            filteredProducts = allProducts
+        }
+        
+        tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -27,6 +54,7 @@ class AllProductsTableViewController: UITableViewController {
     let CELL_PRODUCT = "itemCell"
     let CELL_INFO = "totalCell"
     var allProducts: [Product] = []
+    var filteredProducts: [Product] = []
     weak var productDelegate: AddProductDelegate?
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -36,7 +64,7 @@ class AllProductsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case SECTION_PRODUCT:
-            return allProducts.count
+            return filteredProducts.count
         case SECTION_INFO:
             return 1
         default:
@@ -51,7 +79,7 @@ class AllProductsTableViewController: UITableViewController {
             let productCell =  tableView.dequeueReusableCell(withIdentifier: CELL_PRODUCT, for: indexPath)
             
             var content = productCell.defaultContentConfiguration()
-            let product = allProducts[indexPath.row]
+            let product = filteredProducts[indexPath.row]
             content.text = product.productName
             content.secondaryText = "\(product.productPrice!)"
             productCell.contentConfiguration = content
@@ -59,9 +87,13 @@ class AllProductsTableViewController: UITableViewController {
             return productCell
         } else {
             let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath) as! ProductCountTableViewCell
-            
-            infoCell.totalLabel?.text = "\(allProducts.count) products in the database"
-            
+            if filteredProducts.count == 0 {
+                infoCell.totalLabel?.text = "No products in the database"
+            } else if filteredProducts.count == 1 {
+                infoCell.totalLabel?.text = "\(filteredProducts.count) product in the database"
+            } else {
+                infoCell.totalLabel?.text = "\(filteredProducts.count) products in the database"
+            }
             return infoCell
         }
     }
@@ -82,7 +114,9 @@ class AllProductsTableViewController: UITableViewController {
     // USERS SHOULD NOT BE ABLE TO DELETE PRODUCTS FROM THE DATABASE
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete && indexPath.section == SECTION_PRODUCT {
+        if let index = self.allProducts.firstIndext(of: filteredProducts[indexPath.row]) {
+            self.allProdcuts.remover(at: index)
+        }
             tableView.performBatchUpdates({
                 self.allProducts.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .fade)
@@ -97,7 +131,7 @@ class AllProductsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let productDelegate = productDelegate {
-            if productDelegate.addProduct(allProducts[indexPath.row]) {
+            if productDelegate.addProduct(filteredProducts[indexPath.row]) {
                 navigationController?.popViewController(animated: false)
                 return
             }
