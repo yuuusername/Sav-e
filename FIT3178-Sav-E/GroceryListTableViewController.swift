@@ -38,33 +38,40 @@ class GroceryListTableViewController: UITableViewController {
         var content = itemCell.defaultContentConfiguration()
         let item = groceryList[indexPath.row]
         content.text = item.productName
-        content.secondaryText = String(item.productPrice)
+        content.secondaryText = "\(item.productPrice!)"
         itemCell.contentConfiguration = content
 
         return itemCell
     }
     
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+    
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.performBatchUpdates({
+                self.groceryList.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .fade)
+            }, completion: nil)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
-
+    
+    
+    //Add test products
+    func testProducts() {
+        groceryList.append(Product(productName: "Apples", productPrice: 3.00, productSupermarket: .coles))
+    }
+    
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
