@@ -9,7 +9,7 @@ import UIKit
 
 class ProductCountTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var totalLable: UILabel!
+    @IBOutlet weak var totalLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
