@@ -58,7 +58,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="All Items" image="cart.badge.plus" catalog="system" id="gOV-Sb-alP">
                             <connections>
-                                <segue destination="AKu-7M-3iQ" kind="show" id="S9g-3t-h0p"/>
+                                <segue destination="AKu-7M-3iQ" kind="show" identifier="allProductsSegue" id="S9g-3t-h0p"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -238,14 +238,14 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="totalCell" id="Gai-gA-230" customClass="ProductCountTableViewCell" customModule="FIT3178_Sav_E" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="414" height="36"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="36.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gai-gA-230" id="VoM-xP-7aa">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sam-Py-Oac" userLabel="Total Label">
-                                            <rect key="frame" x="20" y="11" width="374" height="14"/>
+                                            <rect key="frame" x="20" y="11" width="374" height="14.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>

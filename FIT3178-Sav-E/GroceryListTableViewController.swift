@@ -7,11 +7,12 @@
 
 import UIKit
 
-class GroceryListTableViewController: UITableViewController {
+class GroceryListTableViewController: UITableViewController, AddProductDelegate {
     let CELL_ITEM = "itemCell"
     var groceryList: [Product] = []
+    
     override func viewDidLoad() {
-        testProducts()
+        //testProducts()
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
@@ -21,6 +22,14 @@ class GroceryListTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
+    func addProduct(_ newProduct: Product) -> Bool {
+        tableView.performBatchUpdates({
+            groceryList.append(newProduct)
+            tableView.insertRows(at: [IndexPath(row: groceryList.count - 1, section: 0)], with: .automatic)
+        }, completion: nil)
+        return true
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,7 +76,8 @@ class GroceryListTableViewController: UITableViewController {
         }    
     }
     
-    
+    /*
+    // DEPRECIATED
     //Add test products
     func testProducts() {
         groceryList.append(Product(name: "Apples", price: 3.00, supermarket: .coles))
@@ -75,6 +85,15 @@ class GroceryListTableViewController: UITableViewController {
         groceryList.append(Product(name: "2L Milk", price: 10.23, supermarket: .coles))
         groceryList.append(Product(name: "Eggs", price: 1.00, supermarket: .coles))
         groceryList.append(Product(name: "Coke", price: 12.00, supermarket: .coles))
+    }
+    */
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "allProductsSegue" {
+            let destination = segue.destination as! AllProductsTableViewController
+            destination.productDelegate = self
+        }
     }
     
     /*
