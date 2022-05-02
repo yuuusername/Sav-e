@@ -17,6 +17,7 @@
 		A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */; };
 		A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */; };
 		A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */; };
+		A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryListTableViewController.swift; sourceTree = "<group>"; };
 		A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProductsTableViewController.swift; sourceTree = "<group>"; };
 		A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectedViewController.swift; sourceTree = "<group>"; };
+		A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCountTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */,
 				A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */,
 				A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */,
+				A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */,
 				A842DC642818F98C00285445 /* AppDelegate.swift */,
 				A842DC662818F98C00285445 /* SceneDelegate.swift */,
 				A842DC682818F98C00285445 /* ViewController.swift */,
@@ -157,6 +160,7 @@
 				A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */,
 				A842DC652818F98C00285445 /* AppDelegate.swift in Sources */,
 				A842DC672818F98C00285445 /* SceneDelegate.swift in Sources */,
+				A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
