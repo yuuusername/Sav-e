@@ -11,6 +11,7 @@ class GroceryListTableViewController: UITableViewController {
     let CELL_ITEM = "itemCell"
     var groceryList: [Product] = []
     override func viewDidLoad() {
+        testProducts()
         super.viewDidLoad()
 
         // Uncomment the following line to preserve selection between presentations
@@ -27,7 +28,7 @@ class GroceryListTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return groceryList.count
     }
 
     
@@ -40,7 +41,7 @@ class GroceryListTableViewController: UITableViewController {
         content.text = item.productName
         content.secondaryText = "\(item.productPrice!)"
         itemCell.contentConfiguration = content
-
+        
         return itemCell
     }
     
@@ -69,7 +70,11 @@ class GroceryListTableViewController: UITableViewController {
     
     //Add test products
     func testProducts() {
-        groceryList.append(Product(productName: "Apples", productPrice: 3.00, productSupermarket: .coles))
+        groceryList.append(Product(name: "Apples", price: 3.00, supermarket: .coles))
+        groceryList.append(Product(name: "Oranges", price: 7.99, supermarket: .coles))
+        groceryList.append(Product(name: "2L Milk", price: 10.23, supermarket: .coles))
+        groceryList.append(Product(name: "Eggs", price: 1.00, supermarket: .coles))
+        groceryList.append(Product(name: "Coke", price: 12.00, supermarket: .coles))
     }
     
     /*

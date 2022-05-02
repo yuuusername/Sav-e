@@ -9,8 +9,14 @@ import UIKit
 
 class Product: NSObject {
     var productName: String?
-    var productPrice: Int?
+    var productPrice: Double?
     var productSupermarket: Supermarket?
+    
+    init(name: String, price: Double, supermarket: Supermarket) {
+        productName = name
+        productPrice = price
+        productSupermarket = supermarket
+    }
 }
 
 enum Supermarket: Int {
