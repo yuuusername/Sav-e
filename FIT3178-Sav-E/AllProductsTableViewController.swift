@@ -10,7 +10,7 @@ import UIKit
 class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating {
 
     override func viewDidLoad() {
-        createDefaultProducts()
+        //createDefaultProducts()
         filteredProducts = allProducts
         
         let searchController = UISearchController(searchResultsController: nil)
@@ -81,7 +81,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
             var content = productCell.defaultContentConfiguration()
             let product = filteredProducts[indexPath.row]
             content.text = product.productName
-            content.secondaryText = "\(product.productPrice!)"
+            //content.secondaryText = "\(product.productPrice!)"
             productCell.contentConfiguration = content
             
             return productCell
@@ -148,6 +148,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         self.present(alertController, animated: true,completion: nil)
     }
     
+    /*
     func createDefaultProducts() {
         allProducts.append(Product(name: "Apples", price: 3.00, supermarket: .coles))
         allProducts.append(Product(name: "Oranges", price: 2.60, supermarket: .coles))
@@ -156,7 +157,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         allProducts.append(Product(name: "Bananas", price: 5.99, supermarket: .coles))
         allProducts.append(Product(name: "Peaches", price: 2.99, supermarket: .coles))
     }
-    
+    */
     
     /*
     // Override to support rearranging the table view.

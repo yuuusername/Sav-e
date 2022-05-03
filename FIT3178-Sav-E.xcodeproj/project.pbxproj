@@ -23,6 +23,10 @@
 		FCB2A6472821308900F13D4A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FCB2A6462821308900F13D4A /* FirebaseFirestore */; };
 		FCB2A6492821308900F13D4A /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = FCB2A6482821308900F13D4A /* FirebaseFirestoreSwift-Beta */; };
 		FCB2A64B282131E800F13D4A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FCB2A64A282131E800F13D4A /* GoogleService-Info.plist */; };
+		FCB2A64E282156D900F13D4A /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB2A64D282156D900F13D4A /* FirebaseController.swift */; };
+		FCB2A6502821577300F13D4A /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB2A64F2821577300F13D4A /* MulticastDelegate.swift */; };
+		FCB2A652282157BB00F13D4A /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB2A651282157BB00F13D4A /* DatabaseProtocol.swift */; };
+		FCB2A6542821612200F13D4A /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB2A6532821612200F13D4A /* List.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +45,10 @@
 		A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCountTableViewCell.swift; sourceTree = "<group>"; };
 		FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductDelegate.swift; sourceTree = "<group>"; };
 		FCB2A64A282131E800F13D4A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FCB2A64D282156D900F13D4A /* FirebaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		FCB2A64F2821577300F13D4A /* MulticastDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		FCB2A651282157BB00F13D4A /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
+		FCB2A6532821612200F13D4A /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +84,7 @@
 		A842DC632818F98C00285445 /* FIT3178-Sav-E */ = {
 			isa = PBXGroup;
 			children = (
+				FCB2A64C2821569400F13D4A /* Database */,
 				A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */,
 				A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */,
 				A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */,
@@ -85,6 +94,7 @@
 				A842DC662818F98C00285445 /* SceneDelegate.swift */,
 				A842DC682818F98C00285445 /* ViewController.swift */,
 				A842DC7828190B1300285445 /* Product.swift */,
+				FCB2A6532821612200F13D4A /* List.swift */,
 				A842DC6A2818F98C00285445 /* Main.storyboard */,
 				A842DC6D2818F98E00285445 /* Assets.xcassets */,
 				A842DC6F2818F98E00285445 /* LaunchScreen.storyboard */,
@@ -92,6 +102,16 @@
 				FCB2A64A282131E800F13D4A /* GoogleService-Info.plist */,
 			);
 			path = "FIT3178-Sav-E";
+			sourceTree = "<group>";
+		};
+		FCB2A64C2821569400F13D4A /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				FCB2A64F2821577300F13D4A /* MulticastDelegate.swift */,
+				FCB2A651282157BB00F13D4A /* DatabaseProtocol.swift */,
+				FCB2A64D282156D900F13D4A /* FirebaseController.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,13 +194,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCB2A64E282156D900F13D4A /* FirebaseController.swift in Sources */,
 				A842DC692818F98C00285445 /* ViewController.swift in Sources */,
 				A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */,
 				A842DC7928190B1300285445 /* Product.swift in Sources */,
+				FCB2A6542821612200F13D4A /* List.swift in Sources */,
 				A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */,
 				A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */,
 				FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */,
 				A842DC652818F98C00285445 /* AppDelegate.swift in Sources */,
+				FCB2A652282157BB00F13D4A /* DatabaseProtocol.swift in Sources */,
+				FCB2A6502821577300F13D4A /* MulticastDelegate.swift in Sources */,
 				A842DC672818F98C00285445 /* SceneDelegate.swift in Sources */,
 				A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */,
 			);
