@@ -76,7 +76,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == SECTION_PRODUCT {
             //configure and return a product cell
-            let productCell =  tableView.dequeueReusableCell(withIdentifier: CELL_PRODUCT, for: indexPath)
+            let productCell = tableView.dequeueReusableCell(withIdentifier: CELL_PRODUCT, for: indexPath)
             
             var content = productCell.defaultContentConfiguration()
             let product = filteredProducts[indexPath.row]
@@ -87,7 +87,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
             return productCell
         } else {
             let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath) as! ProductCountTableViewCell
-            if filteredProducts.count == 0 {
+            if filteredProducts.isEmpty {
                 infoCell.totalLabel?.text = "No products in the database"
             } else if filteredProducts.count == 1 {
                 infoCell.totalLabel?.text = "\(filteredProducts.count) product in the database"
@@ -134,9 +134,8 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
             if productDelegate.addProduct(filteredProducts[indexPath.row]) {
                 navigationController?.popViewController(animated: false)
                 return
-            }
-            else {
-                displayMessage(title: "This is probably an error", message: "There should be an error message here, not sure why there isn't tho")
+            } else {
+                displayMessage(title: "Item Already in Grocery List", message: "The item you selected is already in your grocery list")
             }
         }
         tableView.deselectRow(at: indexPath, animated: true)

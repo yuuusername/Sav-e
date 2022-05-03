@@ -44,6 +44,32 @@
                                     <segue destination="JhW-D4-0QC" kind="show" id="4De-xY-SPf"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="totalCell" id="cew-n1-NmA" customClass="ProductCountTableViewCell" customModule="FIT3178_Sav_E" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="88" width="414" height="36"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cew-n1-NmA" id="5Rs-Tv-9Mh">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SdN-4V-Di4">
+                                            <rect key="frame" x="20" y="11" width="374" height="14"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                            <color key="textColor" systemColor="secondaryLabelColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="SdN-4V-Di4" secondAttribute="bottom" id="1oM-j3-zux"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="SdN-4V-Di4" secondAttribute="trailing" id="uYW-Yc-6a7"/>
+                                        <constraint firstItem="SdN-4V-Di4" firstAttribute="leading" secondItem="5Rs-Tv-9Mh" secondAttribute="leadingMargin" id="vPN-aA-auj"/>
+                                        <constraint firstItem="SdN-4V-Di4" firstAttribute="top" secondItem="5Rs-Tv-9Mh" secondAttribute="topMargin" id="wXg-YO-NSh"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="gLTotalLabel" destination="SdN-4V-Di4" id="8M3-T0-rsH"/>
+                                    <outlet property="totalLabel" destination="SdN-4V-Di4" id="1fv-FD-2aA"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="h1W-S0-IlN" id="fKt-qb-N83"/>
@@ -238,14 +264,14 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="totalCell" id="Gai-gA-230" customClass="ProductCountTableViewCell" customModule="FIT3178_Sav_E" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="414" height="36.5"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="36"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gai-gA-230" id="VoM-xP-7aa">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sam-Py-Oac" userLabel="Total Label">
-                                            <rect key="frame" x="20" y="11" width="374" height="14.5"/>
+                                            <rect key="frame" x="20" y="11" width="374" height="14"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>

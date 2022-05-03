@@ -8,7 +8,10 @@
 import UIKit
 
 class GroceryListTableViewController: UITableViewController, AddProductDelegate {
+    let SECTION_ITEM = 0
+    let SECTION_INFO = 1
     let CELL_ITEM = "itemCell"
+    let CELL_INFO = "totalCell"
     var groceryList: [Product] = []
     
     override func viewDidLoad() {
@@ -23,9 +26,13 @@ class GroceryListTableViewController: UITableViewController, AddProductDelegate 
     }
 
     func addProduct(_ newProduct: Product) -> Bool {
+        if groceryList.contains(where: {$0.productName == newProduct.productName}){
+            return false
+        }
         tableView.performBatchUpdates({
             groceryList.append(newProduct)
             tableView.insertRows(at: [IndexPath(row: groceryList.count - 1, section: 0)], with: .automatic)
+            tableView.reloadSections([SECTION_INFO], with: .automatic)
         }, completion: nil)
         return true
     }
@@ -33,25 +40,48 @@ class GroceryListTableViewController: UITableViewController, AddProductDelegate 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groceryList.count
+        switch section {
+        case SECTION_ITEM:
+            return groceryList.count
+        case SECTION_INFO:
+            return 1
+        default:
+            return 0
+        }
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let itemCell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
-        
-        var content = itemCell.defaultContentConfiguration()
-        let item = groceryList[indexPath.row]
-        content.text = item.productName
-        content.secondaryText = "\(item.productPrice!)"
-        itemCell.contentConfiguration = content
-        
-        return itemCell
+        if indexPath.section == SECTION_ITEM {
+            // Configure and return an item cell
+            let itemCell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
+            
+            var content = itemCell.defaultContentConfiguration()
+            let item = groceryList[indexPath.row]
+            content.text = item.productName
+            content.secondaryText = "\(item.productPrice!)"
+            itemCell.contentConfiguration = content
+            
+            return itemCell
+        } else {
+            // Configure and return an info cell instead
+            let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath) as! ProductCountTableViewCell
+            
+            
+            if groceryList.isEmpty {
+                infoCell.gLTotalLabel?.text =  "There are no items in your grocery list. Tap the shopping cart to start adding items."
+            } else if groceryList.count == 1 {
+                infoCell.gLTotalLabel?.text = "\(groceryList.count) item in your grocery list"
+            } else {
+                infoCell.gLTotalLabel?.text = "\(groceryList.count) items in your grocery list"
+            }
+            
+            return infoCell
+        }
     }
     
 
@@ -59,22 +89,28 @@ class GroceryListTableViewController: UITableViewController, AddProductDelegate 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
-        return true
+        if indexPath.section == SECTION_ITEM {
+            return true
+        } else {
+            return false
+        }
     }
     
 
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        if editingStyle == .delete && indexPath.section == SECTION_ITEM {
             tableView.performBatchUpdates({
                 self.groceryList.remove(at: indexPath.row)
                 self.tableView.deleteRows(at: [indexPath], with: .fade)
+                self.tableView.reloadSections([SECTION_INFO], with: .automatic)
             }, completion: nil)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
+    
     
     /*
     // DEPRECIATED
