@@ -63,7 +63,7 @@ class GroceryListTableViewController: UITableViewController, AddProductDelegate 
             var content = itemCell.defaultContentConfiguration()
             let item = groceryList[indexPath.row]
             content.text = item.productName
-            //content.secondaryText = "\(item.productPrice!)"
+            content.secondaryText = "\(item.productPrice!)"
             itemCell.contentConfiguration = content
             
             return itemCell

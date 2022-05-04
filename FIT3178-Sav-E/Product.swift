@@ -6,17 +6,20 @@
 //
 
 import UIKit
-import FirebaseFirestoreSwift
 
-class Product: NSObject, Codable {
-    @DocumentID var id: String?
+class Product: NSObject {
     var productName: String?
-    var colesId: String?
-    var woolworthsId: String?
-    enum CodingKeys: String, CodingKey {
-        case id
-        case productName
-        case colesId
-        case woolworthsId
+    var productPrice: Double?
+    var productSupermarket: Supermarket?
+    
+    init(name: String, price: Double, supermarket: Supermarket) {
+        productName = name
+        productPrice = price
+        productSupermarket = supermarket
     }
+}
+
+enum Supermarket: Int {
+    case coles = 0
+    case woolworths = 1
 }
