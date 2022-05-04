@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GroceryListTableViewController: UITableViewController, DatabaseProtocol {
+class GroceryListTableViewController: UITableViewController, DatabaseListener {
     let SECTION_ITEM = 0
     let SECTION_INFO = 1
     let CELL_ITEM = "itemCell"
@@ -134,7 +134,6 @@ class GroceryListTableViewController: UITableViewController, DatabaseProtocol {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         }
-    }
     
     /*
     // Override to support rearranging the table view.

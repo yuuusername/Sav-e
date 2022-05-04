@@ -18,11 +18,15 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
 
     override init() {
         persistentContainer = NSPersistentContainer(name: "Sav-E-DataModel")
-        persistentContainer.loadPersistentStores() { (description, error) in if let error = error {
+        persistentContainer.loadPersistentStores() { (description, error) in
+            if let error = error {
             fatalError("Failed to load Core Data Stack with error: \(error)")
             }
         }
         super.init()
+        if fetchAllItems().count == 0 {
+            createDefaultItems()
+        }
     }
     
     // MARK: - Lazy Initialisation of Default Team
@@ -47,11 +51,16 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     
     // MARK: - Database Adoption
     func addProduct(productName: String, colesId: String, woolworthsId: String) -> Product {
-        <#code#>
+        let item = NSEntityDescription.insertNewObject(forEntityName: "Product", into: persistentContainer.viewContext) as! Product
+        item.productName = productName
+        item.colesId = colesId
+        item.woolworthsId = woolworthsId
+        
+        return item
     }
     
     func deleteProduct(item: Product) {
-        <#code#>
+        persistentContainer.viewContext.delete(item)
     }
     
     func addList(listName: String) -> List {
@@ -148,10 +157,25 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
         if listener.listenerType == .items || listener.listenerType == .all {
             listener.onAllItemsChange(change: .update, items: fetchAllItems())
         }
+        
+        if listener.listenerType == .items || listener.listenerType == .all {
+            listener.onAllItemsChange(change: .update, items: fetchAllItems())
+        }
     }
     
     func removeListener(listener: DatabaseListener) {
         listeners.removeDelegate(listener)
+    }
+    
+    func createDefaultItems() {
+        let _ = addProduct(productName: "Pink Lady Apple", colesId: "apples-pink-lady-loose", woolworthsId: "105919")
+        let _ = addProduct(productName: "Full Cream Milk 3L", colesId: "coles-milk-full-cream-8150288p", woolworthsId: "807384")
+        let _ = addProduct(productName: "Navel Orange", colesId: "oranges-navel-loose", woolworthsId: "259450")
+        let _ = addProduct(productName: "Banana", colesId: "coles-fresh-bananas---loose", woolworthsId: "133211")
+        let _ = addProduct(productName: "Celery", colesId: "celery-bunch", woolworthsId: "135918")
+        let _ = addProduct(productName: "Tomato", colesId: "tomatoes-field-loose", woolworthsId: "134034")
+        let _ = addProduct(productName: "Continental Cucumber", colesId: "cucumber-continental", woolworthsId: "137102")
+        cleanup()
     }
     
     //MARK: - Fetched Results Controller Protocol methods

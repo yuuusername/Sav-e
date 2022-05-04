@@ -175,16 +175,6 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         self.present(alertController, animated: true,completion: nil)
     }
     
-    /*
-    func createDefaultProducts() {
-        allProducts.append(Product(name: "Apples", price: 3.00, supermarket: .coles))
-        allProducts.append(Product(name: "Oranges", price: 2.60, supermarket: .coles))
-        allProducts.append(Product(name: "Pears", price: 4.00, supermarket: .coles))
-        allProducts.append(Product(name: "2L Milk", price: 2.00, supermarket: .coles))
-        allProducts.append(Product(name: "Bananas", price: 5.99, supermarket: .coles))
-        allProducts.append(Product(name: "Peaches", price: 2.99, supermarket: .coles))
-    }
-    */
     
     /*
     // Override to support rearranging the table view.
