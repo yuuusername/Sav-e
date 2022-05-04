@@ -7,11 +7,11 @@
 
 import UIKit
 
-class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating {
+class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener {
 
     override func viewDidLoad() {
-        createDefaultProducts()
-        filteredProducts = allProducts
+        // createDefaultProducts()
+        filteredItems = allItems
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -23,7 +23,8 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         definesPresentationContext = true
         
         super.viewDidLoad()
-
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        databaseController = appDelegate?.databaseController
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -31,17 +32,46 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        databaseController?.addListener(listener: self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        databaseController?.removeListener(listener: self)
+    }
+    
+    func onAllItemsChange(change: DatabaseChange, items: [Product]) {
+        allItems = items
+        updateSearchResults(for: navigationItem.searchController!)
+    }
+    
+    func onListChange(change: DatabaseChange, listItems: [Product]) {
+        // Do nothing
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete && indexPath.section == SECTION_ITEM {
+            let item = filteredItems[indexPath.row]
+            databaseController?.deleteProduct(item: item)
+        }
+    }
+    
+    // MARK: - Database adoption
+    var listenerType = ListenerType.items
+    weak var databaseController: DatabaseProtocol?
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text?.lowercased() else {
             return
         }
         if searchText.count > 0 {
-            filteredProducts = allProducts.filter({(product:Product) -> Bool in
+            filteredItems = allItems.filter({(product:Product) -> Bool in
                 return (product.productName?.lowercased().contains(searchText) ?? false)
             })
         } else {
-            filteredProducts = allProducts
+            filteredItems = allItems
         }
         
         tableView.reloadData()
@@ -49,13 +79,12 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
 
     // MARK: - Table view data source
     
-    let SECTION_PRODUCT = 0
+    let SECTION_ITEM = 0
     let SECTION_INFO = 1
-    let CELL_PRODUCT = "itemCell"
+    let CELL_ITEM = "itemCell"
     let CELL_INFO = "totalCell"
-    var allProducts: [Product] = []
-    var filteredProducts: [Product] = []
-    weak var productDelegate: AddProductDelegate?
+    var allItems: [Product] = []
+    var filteredItems: [Product] = []
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -63,8 +92,8 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case SECTION_PRODUCT:
-            return filteredProducts.count
+        case SECTION_ITEM:
+            return filteredItems.count
         case SECTION_INFO:
             return 1
         default:
@@ -74,25 +103,24 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == SECTION_PRODUCT {
+        if indexPath.section == SECTION_ITEM {
             //configure and return a product cell
-            let productCell = tableView.dequeueReusableCell(withIdentifier: CELL_PRODUCT, for: indexPath)
+            let productCell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
             
             var content = productCell.defaultContentConfiguration()
-            let product = filteredProducts[indexPath.row]
+            let product = filteredItems[indexPath.row]
             content.text = product.productName
-            content.secondaryText = "\(product.productPrice!)"
             productCell.contentConfiguration = content
             
             return productCell
         } else {
             let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath) as! ProductCountTableViewCell
-            if filteredProducts.isEmpty {
+            if filteredItems.isEmpty {
                 infoCell.totalLabel?.text = "No products in the database"
-            } else if filteredProducts.count == 1 {
-                infoCell.totalLabel?.text = "\(filteredProducts.count) product in the database"
+            } else if filteredItems.count == 1 {
+                infoCell.totalLabel?.text = "\(filteredItems.count) product in the database"
             } else {
-                infoCell.totalLabel?.text = "\(filteredProducts.count) products in the database"
+                infoCell.totalLabel?.text = "\(filteredItems.count) products in the database"
             }
             return infoCell
         }
@@ -102,7 +130,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == SECTION_PRODUCT {
+        if indexPath.section == SECTION_ITEM {
             return true
         } else {
             return true
@@ -130,14 +158,13 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let productDelegate = productDelegate {
-            if productDelegate.addProduct(filteredProducts[indexPath.row]) {
-                navigationController?.popViewController(animated: false)
-                return
-            } else {
-                displayMessage(title: "Item Already in Grocery List", message: "The item you selected is already in your grocery list")
-            }
+        let item = filteredItems[indexPath.row]
+        let itemAdded = databaseController?.addItemToList(item: item, list: databaseController!.defaultList) ?? false
+        if itemAdded {
+            navigationController?.popViewController(animated: false)
+            return
         }
+        displayMessage(title: "Some error message", message: "Unable to add more members to party")
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -148,6 +175,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         self.present(alertController, animated: true,completion: nil)
     }
     
+    /*
     func createDefaultProducts() {
         allProducts.append(Product(name: "Apples", price: 3.00, supermarket: .coles))
         allProducts.append(Product(name: "Oranges", price: 2.60, supermarket: .coles))
@@ -156,7 +184,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         allProducts.append(Product(name: "Bananas", price: 5.99, supermarket: .coles))
         allProducts.append(Product(name: "Peaches", price: 2.99, supermarket: .coles))
     }
-    
+    */
     
     /*
     // Override to support rearranging the table view.

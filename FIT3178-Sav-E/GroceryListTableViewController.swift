@@ -7,34 +7,44 @@
 
 import UIKit
 
-class GroceryListTableViewController: UITableViewController, AddProductDelegate {
+class GroceryListTableViewController: UITableViewController, DatabaseProtocol {
     let SECTION_ITEM = 0
     let SECTION_INFO = 1
     let CELL_ITEM = "itemCell"
     let CELL_INFO = "totalCell"
     var groceryList: [Product] = []
+    var listenerType: ListenerType = .list
+    weak var databaseController: DatabaseProtocol?
     
     override func viewDidLoad() {
         //testProducts()
         super.viewDidLoad()
-
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        databaseController = appDelegate?.databaseController
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
-    func addProduct(_ newProduct: Product) -> Bool {
-        if groceryList.contains(where: {$0.productName == newProduct.productName}){
-            return false
-        }
-        tableView.performBatchUpdates({
-            groceryList.append(newProduct)
-            tableView.insertRows(at: [IndexPath(row: groceryList.count - 1, section: 0)], with: .automatic)
-            tableView.reloadSections([SECTION_INFO], with: .automatic)
-        }, completion: nil)
-        return true
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        databaseController?.addListener(listener: self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        databaseController?.removeListener(listener: self)
+    }
+    
+    func onAllItemsChange(change: DatabaseChange, items: [Product]) {
+        
+    }
+    
+    func onListChange(change: DatabaseChange, listItems: [Product]) {
+        groceryList = listItems
+        tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -63,7 +73,6 @@ class GroceryListTableViewController: UITableViewController, AddProductDelegate 
             var content = itemCell.defaultContentConfiguration()
             let item = groceryList[indexPath.row]
             content.text = item.productName
-            content.secondaryText = "\(item.productPrice!)"
             itemCell.contentConfiguration = content
             
             return itemCell
@@ -101,14 +110,12 @@ class GroceryListTableViewController: UITableViewController, AddProductDelegate 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete && indexPath.section == SECTION_ITEM {
-            tableView.performBatchUpdates({
-                self.groceryList.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .fade)
-                self.tableView.reloadSections([SECTION_INFO], with: .automatic)
-            }, completion: nil)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            self.databaseController?.removeItemFromList(item: groceryList[indexPath.row], list: databaseController!.defaultList)
+        }
+    }
+    
+    func addProduct(_ newItem: Product) -> Bool {
+        return databaseController?.addItemToList(item: newItem, list: databaseController!.defaultList) ?? false
     }
     
     
@@ -126,9 +133,6 @@ class GroceryListTableViewController: UITableViewController, AddProductDelegate 
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "allProductsSegue" {
-            let destination = segue.destination as! AllProductsTableViewController
-            destination.productDelegate = self
         }
     }
     
