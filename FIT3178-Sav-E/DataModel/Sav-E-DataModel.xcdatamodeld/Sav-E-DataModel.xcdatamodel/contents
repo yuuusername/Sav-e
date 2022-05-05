@@ -11,7 +11,7 @@
         <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" inverseName="items" inverseEntity="List"/>
     </entity>
     <elements>
-        <element name="List" positionX="-54" positionY="18" width="128" height="59"/>
         <element name="Product" positionX="-63" positionY="-18" width="128" height="89"/>
+        <element name="List" positionX="-54" positionY="18" width="128" height="59"/>
     </elements>
 </model>

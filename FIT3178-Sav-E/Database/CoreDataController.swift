@@ -90,7 +90,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     func fetchListItems() -> [Product] {
         if listItemsFetchedResultsController == nil {
             let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
-            let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+            let nameSortDescriptor = NSSortDescriptor(key: "productName", ascending: true)
             let predicate = NSPredicate(format: "ANY lists.name == %@", DEFAULT_LIST_NAME)
             fetchRequest.sortDescriptors = [nameSortDescriptor]
             fetchRequest.predicate = predicate
@@ -130,7 +130,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     func fetchAllItems() -> [Product] {
         if allItemsFetchedResultsController == nil {
             let request: NSFetchRequest<Product> = Product.fetchRequest()
-            let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+            let nameSortDescriptor = NSSortDescriptor(key: "productName", ascending: true)
             request.sortDescriptors = [nameSortDescriptor]
             
             // Initialise Fetched Results Controller
