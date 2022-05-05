@@ -29,7 +29,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
         }
     }
     
-    // MARK: - Lazy Initialisation of Default Team
+    // MARK: - Lazy Initialisation of Default List
     lazy var defaultList: List = {
         var lists = [List]()
         
@@ -99,6 +99,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
                 NSFetchedResultsController<Product>(fetchRequest: fetchRequest,
                 managedObjectContext: persistentContainer.viewContext,
                 sectionNameKeyPath: nil, cacheName: nil)
+            
             listItemsFetchedResultsController?.delegate = self
             
             do {
@@ -158,8 +159,8 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
             listener.onAllItemsChange(change: .update, items: fetchAllItems())
         }
         
-        if listener.listenerType == .items || listener.listenerType == .all {
-            listener.onAllItemsChange(change: .update, items: fetchAllItems())
+        if listener.listenerType == .list || listener.listenerType == .all {
+            listener.onListChange(change: .update, listItems: fetchListItems())
         }
     }
     
