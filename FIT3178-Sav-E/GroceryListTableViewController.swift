@@ -42,35 +42,13 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     let CELL_INFO = "totalCell"
     var groceryList: [Product] = []
     var listenerType: ListenerType = .list
-    var woolworthsId: String = "105919"
+    var woolworthsId: String?
     var woolworthsPrice: Double = 0.0
     weak var databaseController: DatabaseProtocol?
     
     override func viewDidLoad() {
         //testProducts()
         super.viewDidLoad()
-        
-        let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(woolworthsId)")
-        if let requestURL = requestURL {
-            Task {
-                
-                do {
-                    let (data, response) = try await URLSession.shared.data(from: requestURL)
-                    guard let httpResponse = response as? HTTPURLResponse,
-                          httpResponse.statusCode == 200 else {
-                              throw PriceListError.invalidServerResponse
-                          }
-                    let decoder = JSONDecoder()
-                    let item = try decoder.decode(ProductPrice.self, from: data)
-                    woolworthsPrice = item.price
-                    tableView.reloadData()
-                }
-                catch {
-                    //print("Caught Error: " + error.localizedDescription)
-                    print(String(describing: error))
-                }
-            }
-        }
         
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate?.databaseController
@@ -120,9 +98,10 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             
             var content = itemCell.defaultContentConfiguration()
             let item = groceryList[indexPath.row]
-            let price = woolworthsPrice
+            woolworthsPriceGetter(woolworthsId: groceryList[indexPath.row].woolworthsId!)
+            groceryList[indexPath.row].woolworthsPrice = woolworthsPrice
             content.text = item.productName
-            content.secondaryText = String(price)
+            content.secondaryText = String(item.woolworthsPrice)
             itemCell.contentConfiguration = content
             
             return itemCell
@@ -166,6 +145,31 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     
     func addProduct(_ newItem: Product) -> Bool {
         return databaseController?.addItemToList(item: newItem, list: databaseController!.defaultList) ?? false
+    }
+    
+    
+    func woolworthsPriceGetter(woolworthsId: String) {
+        let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(woolworthsId)")
+        if let requestURL = requestURL {
+            Task {
+                
+                do {
+                    let (data, response) = try await URLSession.shared.data(from: requestURL)
+                    guard let httpResponse = response as? HTTPURLResponse,
+                          httpResponse.statusCode == 200 else {
+                              throw PriceListError.invalidServerResponse
+                          }
+                    let decoder = JSONDecoder()
+                    let item = try decoder.decode(ProductPrice.self, from: data)
+                    woolworthsPrice = item.price
+                    tableView.reloadData()
+                }
+                catch {
+                    //print("Caught Error: " + error.localizedDescription)
+                    print(String(describing: error))
+                }
+            }
+        }
     }
     
     

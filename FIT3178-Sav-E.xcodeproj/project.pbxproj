@@ -22,10 +22,10 @@
 		A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */; };
 		FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */; };
 		FC7EB76B282389C100452A80 /* Sav-E-DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB769282389C100452A80 /* Sav-E-DataModel.xcdatamodeld */; };
-		FC7EB77028238AF900452A80 /* Product+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB76C28238AF900452A80 /* Product+CoreDataClass.swift */; };
-		FC7EB77128238AF900452A80 /* Product+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB76D28238AF900452A80 /* Product+CoreDataProperties.swift */; };
-		FC7EB77228238AF900452A80 /* List+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB76E28238AF900452A80 /* List+CoreDataClass.swift */; };
-		FC7EB77328238AF900452A80 /* List+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB76F28238AF900452A80 /* List+CoreDataProperties.swift */; };
+		FC7EB7942828142E00452A80 /* List+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB7902828142E00452A80 /* List+CoreDataClass.swift */; };
+		FC7EB7952828142E00452A80 /* List+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB7912828142E00452A80 /* List+CoreDataProperties.swift */; };
+		FC7EB7962828142E00452A80 /* Product+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB7922828142E00452A80 /* Product+CoreDataClass.swift */; };
+		FC7EB7972828142E00452A80 /* Product+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB7932828142E00452A80 /* Product+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,10 +46,10 @@
 		A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCountTableViewCell.swift; sourceTree = "<group>"; };
 		FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductDelegate.swift; sourceTree = "<group>"; };
 		FC7EB76A282389C100452A80 /* Sav-E-DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Sav-E-DataModel.xcdatamodel"; sourceTree = "<group>"; };
-		FC7EB76C28238AF900452A80 /* Product+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataClass.swift"; sourceTree = "<group>"; };
-		FC7EB76D28238AF900452A80 /* Product+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		FC7EB76E28238AF900452A80 /* List+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataClass.swift"; sourceTree = "<group>"; };
-		FC7EB76F28238AF900452A80 /* List+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FC7EB7902828142E00452A80 /* List+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataClass.swift"; sourceTree = "<group>"; };
+		FC7EB7912828142E00452A80 /* List+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FC7EB7922828142E00452A80 /* Product+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataClass.swift"; sourceTree = "<group>"; };
+		FC7EB7932828142E00452A80 /* Product+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,10 +103,10 @@
 		A86DC40F28223840008EA835 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				FC7EB76C28238AF900452A80 /* Product+CoreDataClass.swift */,
-				FC7EB76D28238AF900452A80 /* Product+CoreDataProperties.swift */,
-				FC7EB76E28238AF900452A80 /* List+CoreDataClass.swift */,
-				FC7EB76F28238AF900452A80 /* List+CoreDataProperties.swift */,
+				FC7EB7902828142E00452A80 /* List+CoreDataClass.swift */,
+				FC7EB7912828142E00452A80 /* List+CoreDataProperties.swift */,
+				FC7EB7922828142E00452A80 /* Product+CoreDataClass.swift */,
+				FC7EB7932828142E00452A80 /* Product+CoreDataProperties.swift */,
 				FC7EB769282389C100452A80 /* Sav-E-DataModel.xcdatamodeld */,
 			);
 			path = DataModel;
@@ -195,20 +195,20 @@
 			files = (
 				A842DC692818F98C00285445 /* ViewController.swift in Sources */,
 				A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */,
+				FC7EB7942828142E00452A80 /* List+CoreDataClass.swift in Sources */,
 				A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */,
 				A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */,
+				FC7EB7952828142E00452A80 /* List+CoreDataProperties.swift in Sources */,
 				FC7EB76B282389C100452A80 /* Sav-E-DataModel.xcdatamodeld in Sources */,
 				FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */,
+				FC7EB7962828142E00452A80 /* Product+CoreDataClass.swift in Sources */,
 				A842DC652818F98C00285445 /* AppDelegate.swift in Sources */,
-				FC7EB77228238AF900452A80 /* List+CoreDataClass.swift in Sources */,
-				FC7EB77028238AF900452A80 /* Product+CoreDataClass.swift in Sources */,
 				A842DC672818F98C00285445 /* SceneDelegate.swift in Sources */,
 				A86DC41D28223A79008EA835 /* MulticastDelegate.swift in Sources */,
-				FC7EB77128238AF900452A80 /* Product+CoreDataProperties.swift in Sources */,
 				A86DC42128223BC7008EA835 /* CoreDataController.swift in Sources */,
 				A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */,
+				FC7EB7972828142E00452A80 /* Product+CoreDataProperties.swift in Sources */,
 				A86DC41F28223AC8008EA835 /* DatabaseProtocol.swift in Sources */,
-				FC7EB77328238AF900452A80 /* List+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

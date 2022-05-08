@@ -6,12 +6,14 @@
     </entity>
     <entity name="Product" representedClassName="Product" syncable="YES">
         <attribute name="colesId" optional="YES" attributeType="String"/>
+        <attribute name="colesPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="productName" optional="YES" attributeType="String"/>
         <attribute name="woolworthsId" optional="YES" attributeType="String"/>
+        <attribute name="woolworthsPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="List" inverseName="items" inverseEntity="List"/>
     </entity>
     <elements>
-        <element name="Product" positionX="-63" positionY="-18" width="128" height="89"/>
+        <element name="Product" positionX="-63" positionY="-18" width="128" height="119"/>
         <element name="List" positionX="-54" positionY="18" width="128" height="59"/>
     </elements>
 </model>
