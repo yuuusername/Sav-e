@@ -7,8 +7,8 @@
 
 import UIKit
 
-class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener {
 
+class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener {
     override func viewDidLoad() {
         // createDefaultProducts()
         filteredItems = allItems
@@ -164,7 +164,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
             navigationController?.popViewController(animated: false)
             return
         }
-        displayMessage(title: "Some error message", message: "Unable to add more members to party")
+        displayMessage(title: "Item Already in List", message: "The \(item.productName ?? "product with the same name") is already in your grocery list")
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

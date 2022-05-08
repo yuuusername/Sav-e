@@ -7,6 +7,34 @@
 
 import UIKit
 
+
+enum PriceListError: Error {
+    case invalidServerResponse
+}
+
+
+// MARK: - Product Data
+class ProductPrice: Codable {
+    var price: Double
+    
+    private enum RootKeys: String, CodingKey {
+        case offers
+    }
+    
+    required init(from decoder: Decoder) throws {
+        // Get root container
+        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
+        let priceContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .offers)
+        self.price = try priceContainer.decode(Double.self, forKey: .price)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case price
+    }
+}
+
+
+// MARK: - Table View Controller
 class GroceryListTableViewController: UITableViewController, DatabaseListener {
     let SECTION_ITEM = 0
     let SECTION_INFO = 1
@@ -14,18 +42,38 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     let CELL_INFO = "totalCell"
     var groceryList: [Product] = []
     var listenerType: ListenerType = .list
+    var woolworthsId: String = "105919"
+    var woolworthsPrice: Double = 0.0
     weak var databaseController: DatabaseProtocol?
     
     override func viewDidLoad() {
         //testProducts()
         super.viewDidLoad()
+        
+        let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(woolworthsId)")
+        if let requestURL = requestURL {
+            Task {
+                
+                do {
+                    let (data, response) = try await URLSession.shared.data(from: requestURL)
+                    guard let httpResponse = response as? HTTPURLResponse,
+                          httpResponse.statusCode == 200 else {
+                              throw PriceListError.invalidServerResponse
+                          }
+                    let decoder = JSONDecoder()
+                    let item = try decoder.decode(ProductPrice.self, from: data)
+                    woolworthsPrice = item.price
+                    tableView.reloadData()
+                }
+                catch {
+                    //print("Caught Error: " + error.localizedDescription)
+                    print(String(describing: error))
+                }
+            }
+        }
+        
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate?.databaseController
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,7 +120,9 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             
             var content = itemCell.defaultContentConfiguration()
             let item = groceryList[indexPath.row]
+            let price = woolworthsPrice
             content.text = item.productName
+            content.secondaryText = String(price)
             itemCell.contentConfiguration = content
             
             return itemCell
