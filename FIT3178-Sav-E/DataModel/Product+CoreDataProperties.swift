@@ -16,9 +16,9 @@ extension Product {
         return NSFetchRequest<Product>(entityName: "Product")
     }
 
-    @NSManaged public var productName: String?
-    @NSManaged public var colesId: String?
-    @NSManaged public var woolworthsId: String?
+    @NSManaged public var productName: String
+    @NSManaged public var colesId: String
+    @NSManaged public var woolworthsId: String
     @NSManaged public var woolworthsPrice: Double
     @NSManaged public var colesPrice: Double
     @NSManaged public var lists: NSSet?

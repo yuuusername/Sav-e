@@ -68,7 +68,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         }
         if searchText.count > 0 {
             filteredItems = allItems.filter({(product:Product) -> Bool in
-                return (product.productName?.lowercased().contains(searchText) ?? false)
+                return (product.productName.lowercased().contains(searchText))
             })
         } else {
             filteredItems = allItems

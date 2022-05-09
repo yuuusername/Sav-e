@@ -98,8 +98,31 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             
             var content = itemCell.defaultContentConfiguration()
             let item = groceryList[indexPath.row]
-            woolworthsPriceGetter(woolworthsId: groceryList[indexPath.row].woolworthsId!)
-            groceryList[indexPath.row].woolworthsPrice = woolworthsPrice
+            
+            // MARK: - Request price for product
+            let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(groceryList[indexPath.row].woolworthsId)")
+            if let requestURL = requestURL {
+                Task {
+                    do {
+                        let (data, response) = try await URLSession.shared.data(from: requestURL)
+                        guard let httpResponse = response as? HTTPURLResponse,
+                              httpResponse.statusCode == 200 else {
+                                  throw PriceListError.invalidServerResponse
+                              }
+                        let decoder = JSONDecoder()
+                        let itemPrice = try decoder.decode(ProductPrice.self, from: data)
+                        item.woolworthsPrice = itemPrice.price
+                        await MainActor.run {
+                            tableView.reloadRows(at: [indexPath], with: .none)
+                        }
+                    }
+                    catch {
+                        //print("Caught Error: " + error.localizedDescription)
+                        print(String(describing: error))
+                    }
+                }
+            }
+            
             content.text = item.productName
             content.secondaryText = String(item.woolworthsPrice)
             itemCell.contentConfiguration = content
@@ -148,10 +171,11 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     }
     
     
-    func woolworthsPriceGetter(woolworthsId: String) {
+    /*
+    func woolworthsPriceGetter(woolworthsId: String) -> Bool {
         let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(woolworthsId)")
         if let requestURL = requestURL {
-            Task {
+            Task { () -> Bool in
                 
                 do {
                     let (data, response) = try await URLSession.shared.data(from: requestURL)
@@ -163,14 +187,18 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
                     let item = try decoder.decode(ProductPrice.self, from: data)
                     woolworthsPrice = item.price
                     tableView.reloadData()
+                    return true
                 }
                 catch {
                     //print("Caught Error: " + error.localizedDescription)
                     print(String(describing: error))
+                    return false
                 }
             }
         }
+        return false
     }
+    */
     
     
     /*
