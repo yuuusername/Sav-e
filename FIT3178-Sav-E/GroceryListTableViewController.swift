@@ -15,29 +15,21 @@ enum PriceListError: Error {
 
 // MARK: - Product Data
 class ProductPrice: Codable {
-    var woolworthsPrice: Double
-    var colesPrice: String
+    var price: Double
     
     private enum RootKeys: String, CodingKey {
-        case woolworths = "offers"
-        case coles = "catalogEntryView"
-        case colesInfo = "0"
+        case offers
     }
     
     required init(from decoder: Decoder) throws {
         // Get root container
         let rootContainer = try decoder.container(keyedBy: RootKeys.self)
-        let woolworthsPriceContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .woolworths)
-        let colesContainer = try rootContainer.nestedContainer(keyedBy: RootKeys.self, forKey: .coles)
-        let colesInfoContainer = try colesContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .colesInfo)
-        let colesPriceContainer = try colesInfoContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .colesPrice)
-        self.woolworthsPrice = try woolworthsPriceContainer.decode(Double.self, forKey: .woolworthsPrice)
-        self.colesPrice = try colesPriceContainer.decode(String.self, forKey: .colesPrice)
+        let priceContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .offers)
+        self.price = try priceContainer.decode(Double.self, forKey: .price)
     }
     
     private enum CodingKeys: String, CodingKey {
-        case woolworthsPrice = "price"
-        case colesPrice = "p1"
+        case price
     }
 }
 
@@ -50,7 +42,8 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     let CELL_INFO = "totalCell"
     var groceryList: [Product] = []
     var listenerType: ListenerType = .list
-    
+    var woolworthsId: String?
+    var woolworthsPrice: Double = 0.0
     weak var databaseController: DatabaseProtocol?
     
     override func viewDidLoad() {
@@ -106,9 +99,9 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             var content = itemCell.defaultContentConfiguration()
             let item = groceryList[indexPath.row]
             
-            // MARK: - Request Woolworths price for product
-            let woolworthsRequestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(groceryList[indexPath.row].woolworthsId)")
-            if let requestURL = woolworthsRequestURL {
+            // MARK: - Request price for product
+            let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(groceryList[indexPath.row].woolworthsId)")
+            if let requestURL = requestURL {
                 Task {
                     do {
                         let (data, response) = try await URLSession.shared.data(from: requestURL)
@@ -118,31 +111,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
                               }
                         let decoder = JSONDecoder()
                         let itemPrice = try decoder.decode(ProductPrice.self, from: data)
-                        item.woolworthsPrice = itemPrice.woolworthsPrice
-                        await MainActor.run {
-                            tableView.reloadRows(at: [indexPath], with: .none)
-                        }
-                    }
-                    catch {
-                        //print("Caught Error: " + error.localizedDescription)
-                        print(String(describing: error))
-                    }
-                }
-            }
-            
-            // MARK: - Request Coles price for product
-            let colesRequestURL = URL(string: "https://shop.coles.com.au/search/resources/store/20601/productview/bySeoUrlKeyword/\(groceryList[indexPath.row].colesId)")
-            if let requestURL = colesRequestURL {
-                Task {
-                    do {
-                        let (data, response) = try await URLSession.shared.data(from: requestURL)
-                        guard let httpResponse = response as? HTTPURLResponse,
-                              httpResponse.statusCode == 200 else {
-                                  throw PriceListError.invalidServerResponse
-                              }
-                        let decoder = JSONDecoder()
-                        let itemPrice = try decoder.decode(ProductPrice.self, from: data)
-                        item.colesPrice = Double(itemPrice.colesPrice)!
+                        item.woolworthsPrice = itemPrice.price
                         await MainActor.run {
                             tableView.reloadRows(at: [indexPath], with: .none)
                         }
@@ -155,11 +124,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             }
             
             content.text = item.productName
-            if item.colesPrice > item.woolworthsPrice {
-                content.secondaryText = String(item.colesPrice)
-            } else {
-                content.secondaryText = String(item.woolworthsPrice)
-            }
+            content.secondaryText = String(item.woolworthsPrice)
             itemCell.contentConfiguration = content
             
             return itemCell
