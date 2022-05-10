@@ -15,21 +15,21 @@ enum PriceListError: Error {
 
 // MARK: - Product Data
 class ProductPrice: Codable {
-    var price: Double
+    var Price: Double
     
     private enum RootKeys: String, CodingKey {
-        case offers
+        case Product
     }
     
     required init(from decoder: Decoder) throws {
         // Get root container
         let rootContainer = try decoder.container(keyedBy: RootKeys.self)
-        let priceContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .offers)
-        self.price = try priceContainer.decode(Double.self, forKey: .price)
+        let priceContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .Product)
+        self.Price = try priceContainer.decode(Double.self, forKey: .Price)
     }
     
     private enum CodingKeys: String, CodingKey {
-        case price
+        case Price
     }
 }
 
@@ -100,7 +100,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             let item = groceryList[indexPath.row]
             
             // MARK: - Request price for product
-            let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(groceryList[indexPath.row].woolworthsId)")
+            let requestURL = URL(string: "https://www.woolworths.com.au/apis/ui/product/detail/\(groceryList[indexPath.row].woolworthsId)")
             if let requestURL = requestURL {
                 Task {
                     do {
@@ -111,7 +111,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
                               }
                         let decoder = JSONDecoder()
                         let itemPrice = try decoder.decode(ProductPrice.self, from: data)
-                        item.woolworthsPrice = itemPrice.price
+                        item.woolworthsPrice = itemPrice.Price
                         await MainActor.run {
                             tableView.reloadRows(at: [indexPath], with: .none)
                         }

@@ -164,7 +164,7 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
             navigationController?.popViewController(animated: false)
             return
         }
-        displayMessage(title: "Item Already in List", message: "The \(item.productName ?? "product with the same name") is already in your grocery list")
+        displayMessage(title: "Item Already in List", message: "The \(item.productName ) is already in your grocery list")
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
