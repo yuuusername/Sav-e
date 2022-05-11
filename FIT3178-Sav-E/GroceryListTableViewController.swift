@@ -131,7 +131,6 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             let item = groceryList[indexPath.row]
             
             // Request Woolworths price for product
-            /*
             let woolworthsRequestURL = URL(string: "https://www.woolworths.com.au/apis/ui/product/detail/\(groceryList[indexPath.row].woolworthsId)")
             if let requestURL = woolworthsRequestURL {
                 Task {
@@ -154,9 +153,8 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
                     }
                 }
             }
-            */
-            // Request Coles price for product
             
+            // Request Coles price for product
             let colesRequestURL = URL(string: "https://shop.coles.com.au/search/resources/store/20601/productview/bySeoUrlKeyword/\(groceryList[indexPath.row].colesId)")
             if let requestURL = colesRequestURL {
                 Task {
@@ -181,8 +179,13 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
                 }
             }
             
+            
             content.text = item.productName
-            content.secondaryText = String(item.colesPrice)
+            if item.colesPrice < item.woolworthsPrice {
+                content.secondaryText = String(item.colesPrice)
+            } else {
+                content.secondaryText = String(item.woolworthsPrice)
+            }
             itemCell.contentConfiguration = content
             
             return itemCell
