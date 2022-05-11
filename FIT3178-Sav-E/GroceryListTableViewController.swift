@@ -181,10 +181,14 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             
             
             content.text = item.productName
-            if item.colesPrice < item.woolworthsPrice {
+            if item.colesPrice < item.woolworthsPrice && item.colesPrice != 0.0 {
                 content.secondaryText = String(item.colesPrice)
-            } else {
+            } else if item.woolworthsPrice < item.colesPrice && item.woolworthsPrice != 0.0 {
                 content.secondaryText = String(item.woolworthsPrice)
+            } else if item.woolworthsPrice == item.colesPrice && item.woolworthsPrice != 0.0{
+                content.secondaryText = String(item.woolworthsPrice)
+            } else {
+                content.secondaryText = "Loading prices..."
             }
             itemCell.contentConfiguration = content
             
