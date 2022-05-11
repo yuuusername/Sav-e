@@ -168,9 +168,8 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
                               }
                         let decoder = JSONDecoder()
                         let productData = try decoder.decode(ColesProductData.self, from: data)
-                        let price = productData.productData
-                        
-                        item.colesPrice = Double(itemPrice.Price)!
+                        let price = round(Double(productData.productData[0].Price)! * 100)/100.0
+                        item.colesPrice = price
                         await MainActor.run {
                             tableView.reloadRows(at: [indexPath], with: .none)
                         }
@@ -183,7 +182,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             }
             
             content.text = item.productName
-            content.secondaryText = String(item.woolworthsPrice)
+            content.secondaryText = String(item.colesPrice)
             itemCell.contentConfiguration = content
             
             return itemCell
