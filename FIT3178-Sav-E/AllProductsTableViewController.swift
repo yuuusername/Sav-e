@@ -9,6 +9,9 @@ import UIKit
 
 
 class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener {
+    
+    var colesId: String?
+    var woolworthsId: String?
     override func viewDidLoad() {
         // createDefaultProducts()
         filteredItems = allItems
@@ -25,6 +28,40 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         super.viewDidLoad()
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate?.databaseController
+        
+        
+        guard let colesId=colesId else {
+            print("No colesId set")
+            return
+        }
+        
+        guard let woolworthsId = woolworthsId else {
+            print("No woolworthsId set")
+            return
+        }
+
+        let woolworthsRequestURL = URL(string: "https://www.woolworths.com.au/apis/ui/product/detail/\(woolworthsId)")
+        if let woolworthsRequestURL = woolworthsRequestURL {
+            Task {
+                
+                do {
+                    let (data, response) = try await URLSession.shared.data(from: woolworthsRequestURL)
+                    guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                              throw PriceListError.invalidServerResponse
+                          }
+                    let decoder = JSONDecoder()
+                    let itemPrice = try decoder.decode(WoolworthsProductPrice.self, from: data)
+                    item.woolworthsPrice = itemPrice.Price
+                    await MainActor.run {
+                        tableView.reloadRows(at: [indexPath], with: .none)
+                    }
+                }
+                catch {
+                    //print("Caught Error: " + error.localizedDescription)
+                    print(String(describing: error))
+                }
+            }
+        }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
