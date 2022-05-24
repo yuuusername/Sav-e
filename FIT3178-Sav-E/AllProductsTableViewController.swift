@@ -28,45 +28,6 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         super.viewDidLoad()
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate?.databaseController
-        
-        
-        guard let colesId=colesId else {
-            print("No colesId set")
-            return
-        }
-        
-        guard let woolworthsId = woolworthsId else {
-            print("No woolworthsId set")
-            return
-        }
-
-        let woolworthsRequestURL = URL(string: "https://www.woolworths.com.au/apis/ui/product/detail/\(woolworthsId)")
-        if let woolworthsRequestURL = woolworthsRequestURL {
-            Task {
-                
-                do {
-                    let (data, response) = try await URLSession.shared.data(from: woolworthsRequestURL)
-                    guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                              throw PriceListError.invalidServerResponse
-                          }
-                    let decoder = JSONDecoder()
-                    let itemPrice = try decoder.decode(WoolworthsProductPrice.self, from: data)
-                    item.woolworthsPrice = itemPrice.Price
-                    await MainActor.run {
-                        tableView.reloadRows(at: [indexPath], with: .none)
-                    }
-                }
-                catch {
-                    //print("Caught Error: " + error.localizedDescription)
-                    print(String(describing: error))
-                }
-            }
-        }
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -148,7 +109,19 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
             let product = filteredItems[indexPath.row]
             content.text = product.productName
             productCell.contentConfiguration = content
+            let item = filteredItems[indexPath.row]
             
+            
+            
+            content.text = item.productName
+            if item.colesPrice < item.woolworthsPrice {
+                content.secondaryText = String(item.colesPrice)
+            } else if item.woolworthsPrice < item.colesPrice {
+                content.secondaryText = String(item.woolworthsPrice)
+            } else {
+                content.secondaryText = "Loading Prices"
+            }
+            productCell.contentConfiguration = content
             return productCell
         } else {
             let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath) as! ProductCountTableViewCell
@@ -162,7 +135,53 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
             return infoCell
         }
     }
-
+    
+    func checkPrice(product: Product) {
+        // Request Woolworths price for product
+        let woolworthsRequestURL = URL(string: "https://www.woolworths.com.au/apis/ui/product/detail/\(woolworthsId)")!
+        let colesRequestURL = URL(string: "https://shop.coles.com.au/search/resources/store/20601/productview/bySeoUrlKeyword/\(filteredItems[indexPath.row].colesId)")
+        checkPrice(woolworthsRequestURL: woolworthsRequestURL, colesRequestURL: colesRequestURL)
+        if let requestURL = woolworthsRequestURL {
+            Task {
+                do {
+                    let (data, response) = try await URLSession.shared.data(from: requestURL)
+                    guard let httpResponse = response as? HTTPURLResponse,
+                          httpResponse.statusCode == 200 else {
+                              throw PriceListError.invalidServerResponse
+                          }
+                    let decoder = JSONDecoder()
+                    let itemPrice = try decoder.decode(WoolworthsProductPrice.self, from: data)
+                    item.woolworthsPrice = itemPrice.Price
+                }
+                catch {
+                    //print("Caught Error: " + error.localizedDescription)
+                    print(String(describing: error))
+                }
+            }
+        }
+        
+        // Request Coles price for product
+        
+        if let requestURL = colesRequestURL {
+            Task {
+                do {
+                    let (data, response) = try await URLSession.shared.data(from: requestURL)
+                    guard let httpResponse = response as? HTTPURLResponse,
+                          httpResponse.statusCode == 200 else {
+                              throw PriceListError.invalidServerResponse
+                          }
+                    let decoder = JSONDecoder()
+                    let productData = try decoder.decode(ColesProductData.self, from: data)
+                    let price = round(Double(productData.productData[0].Price)! * 100)/100.0
+                    item.colesPrice = price
+                }
+                catch {
+                    //print("Caught Error: " + error.localizedDescription)
+                    print(String(describing: error))
+                }
+            }
+        }
+    }
 
     
     // Override to support conditional editing of the table view.

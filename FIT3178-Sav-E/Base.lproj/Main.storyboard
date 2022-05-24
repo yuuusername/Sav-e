@@ -262,16 +262,19 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="gFY-DA-Ldj" kind="show" identifier="compareProductSegue" id="GVG-5c-mQa"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="totalCell" id="Gai-gA-230" customClass="ProductCountTableViewCell" customModule="FIT3178_Sav_E" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="414" height="36"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="36.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gai-gA-230" id="VoM-xP-7aa">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="36.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sam-Py-Oac" userLabel="Total Label">
-                                            <rect key="frame" x="20" y="11" width="374" height="14"/>
+                                            <rect key="frame" x="20" y="11" width="374" height="14.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                             <nil key="highlightedColor"/>
@@ -317,6 +320,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4v-NM-cYs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="981.15942028985512" y="75"/>
+        </scene>
+        <!--Compare Product-->
+        <scene sceneID="62B-Ud-2Fk">
+            <objects>
+                <tableViewController id="gFY-DA-Ldj" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="UzP-Ix-qly">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="PAR-vJ-XVN">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PAR-vJ-XVN" id="cXh-Rc-fvP">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="gFY-DA-Ldj" id="x4U-bW-g7o"/>
+                            <outlet property="delegate" destination="gFY-DA-Ldj" id="mmU-Vi-Rk3"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Compare Product" id="ZXc-2f-dSR"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zg6-2n-siu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3800" y="-618"/>
         </scene>
     </scenes>
     <resources>
