@@ -130,8 +130,8 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
         let item = newItems[indexPath.row]
         var content = cell.defaultContentConfiguration()
-        content.text = item.name
-        content.secondaryText = String(item.price)
+        cell.textLabel?.text = item.name
+        cell.detailTextLabel?.text = String(item.price!)
         
         return cell
     }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 class ProductsData: NSObject, Decodable {
     var products: [ItemData]?
     private enum CodingKeys: String, CodingKey {
