@@ -8,19 +8,33 @@
 import UIKit
 
 
-class AllProductsTableViewController: UITableViewController, UISearchResultsUpdating, DatabaseListener {
+class AllProductsTableViewController: UITableViewController, UISearchBarDelegate {
+    let CELL_ITEM = "itemCell"
+    let REQUEST_STRING = "https://www.woolworths.com.au/apis/ui/Search/products?searchTerm="
+    let MAX_ITEMS_PER_REQUEST = 40
+    let MAX_REQUESTS = 10
+    var currentRequestIndex: Int = 0
+    var newItems = [ItemData]()
+    var indicator = UIActivityIndicatorView()
+    weak var databaseController: DatabaseProtocol?
     
-    var colesId: String?
-    var woolworthsId: String?
     override func viewDidLoad() {
-        // createDefaultProducts()
-        filteredItems = allItems
         
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search All Products"
+        searchController.searchBar.showsCancelButton = false
         navigationItem.searchController = searchController
+        
+        // Ensures that the search bar is always visible
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
+        // Add loading indicator view
+        indicator.style = UIActivityIndicatorView.Style.large
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(indicator)
+        NSLayoutConstraint.activate([indicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor), indicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)])
         
         // This view controller decides how the search controller is presented
         definesPresentationContext = true
@@ -30,167 +44,102 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
         databaseController = appDelegate?.databaseController
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        databaseController?.addListener(listener: self)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = newItems[indexPath.row]
+        let _ = databaseController?.addProduct(itemData: item)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        databaseController?.removeListener(listener: self)
-    }
-    
-    func onAllItemsChange(change: DatabaseChange, items: [Product]) {
-        allItems = items
-        updateSearchResults(for: navigationItem.searchController!)
-    }
-    
-    func onListChange(change: DatabaseChange, listItems: [Product]) {
-        // Do nothing
-    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete && indexPath.section == SECTION_ITEM {
-            let item = filteredItems[indexPath.row]
-            databaseController?.deleteProduct(item: item)
-        }
-    }
-    
-    // MARK: - Database adoption
-    var listenerType = ListenerType.items
-    weak var databaseController: DatabaseProtocol?
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text?.lowercased() else {
+    func requestItemsNamed(_ itemName: String) async {
+        var searchURLComponents = URLComponents()
+        searchURLComponents.scheme = "https"
+        searchURLComponents.host = "www.woolworths.com.au"
+        searchURLComponents.path = "/apis/ui/Search/products"
+        searchURLComponents.queryItems = [URLQueryItem(name: "maxResults", value: "\(MAX_ITEMS_PER_REQUEST)"), URLQueryItem(name: "startIndex", value: "\(currentRequestIndex * MAX_ITEMS_PER_REQUEST)"), URLQueryItem(name: "searchTerm", value: itemName)]
+        
+        guard let requestURL = searchURLComponents.url else {
+            print("Invalid URL.")
             return
         }
-        if searchText.count > 0 {
-            filteredItems = allItems.filter({(product:Product) -> Bool in
-                return (product.productName.lowercased().contains(searchText))
-            })
-        } else {
-            filteredItems = allItems
-        }
         
+        let urlRequest = URLRequest(url: requestURL)
+        
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                throw PriceListError.invalidServerResponse
+            }
+            DispatchQueue.main.async {
+                self.indicator.stopAnimating()
+            }
+            do {
+                let decoder = JSONDecoder()
+                let productsData = try decoder.decode(ProductsData.self, from: data)
+                if let items = productsData.products {
+                    newItems.append(contentsOf: items)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                    if items.count == MAX_ITEMS_PER_REQUEST,
+                       currentRequestIndex + 1 < MAX_REQUESTS {
+                        currentRequestIndex += 1
+                        await requestItemsNamed(itemName)
+                    }
+                }
+            }
+            catch {
+                print("Caught Error: " + error.localizedDescription)
+            }
+        }
+        catch let error {
+            print(error)
+        }
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        newItems.removeAll()
         tableView.reloadData()
+        
+        guard let searchText = searchBar.text?.lowercased() else {
+            return
+        }
+        navigationItem.searchController?.dismiss(animated: true)
+        indicator.startAnimating()
+        
+        Task {
+            URLSession.shared.invalidateAndCancel()
+            currentRequestIndex = 0
+            await requestItemsNamed(searchText)
+        }
     }
 
     // MARK: - Table view data source
     
-    let SECTION_ITEM = 0
-    let SECTION_INFO = 1
-    let CELL_ITEM = "itemCell"
-    let CELL_INFO = "totalCell"
-    var allItems: [Product] = []
-    var filteredItems: [Product] = []
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case SECTION_ITEM:
-            return filteredItems.count
-        case SECTION_INFO:
-            return 1
-        default:
-            return 0
-        }
+        return newItems.count
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == SECTION_ITEM {
-            //configure and return a product cell
-            let productCell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
-            
-            var content = productCell.defaultContentConfiguration()
-            let product = filteredItems[indexPath.row]
-            content.text = product.productName
-            productCell.contentConfiguration = content
-            let item = filteredItems[indexPath.row]
-            
-            
-            
-            content.text = item.productName
-            if item.colesPrice < item.woolworthsPrice {
-                content.secondaryText = String(item.colesPrice)
-            } else if item.woolworthsPrice < item.colesPrice {
-                content.secondaryText = String(item.woolworthsPrice)
-            } else {
-                content.secondaryText = "Loading Prices"
-            }
-            productCell.contentConfiguration = content
-            return productCell
-        } else {
-            let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath) as! ProductCountTableViewCell
-            if filteredItems.isEmpty {
-                infoCell.totalLabel?.text = "No products in the database"
-            } else if filteredItems.count == 1 {
-                infoCell.totalLabel?.text = "\(filteredItems.count) product in the database"
-            } else {
-                infoCell.totalLabel?.text = "\(filteredItems.count) products in the database"
-            }
-            return infoCell
-        }
-    }
-    
-    func checkPrice(product: Product) {
-        // Request Woolworths price for product
-        let woolworthsRequestURL = URL(string: "https://www.woolworths.com.au/apis/ui/product/detail/\(woolworthsId)")!
-        let colesRequestURL = URL(string: "https://shop.coles.com.au/search/resources/store/20601/productview/bySeoUrlKeyword/\(filteredItems[indexPath.row].colesId)")
-        checkPrice(woolworthsRequestURL: woolworthsRequestURL, colesRequestURL: colesRequestURL)
-        if let requestURL = woolworthsRequestURL {
-            Task {
-                do {
-                    let (data, response) = try await URLSession.shared.data(from: requestURL)
-                    guard let httpResponse = response as? HTTPURLResponse,
-                          httpResponse.statusCode == 200 else {
-                              throw PriceListError.invalidServerResponse
-                          }
-                    let decoder = JSONDecoder()
-                    let itemPrice = try decoder.decode(WoolworthsProductPrice.self, from: data)
-                    item.woolworthsPrice = itemPrice.Price
-                }
-                catch {
-                    //print("Caught Error: " + error.localizedDescription)
-                    print(String(describing: error))
-                }
-            }
-        }
+        //configure and return a product cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
+        let item = newItems[indexPath.row]
+        var content = cell.defaultContentConfiguration()
+        content.text = item.name
+        content.secondaryText = String(item.price)
         
-        // Request Coles price for product
-        
-        if let requestURL = colesRequestURL {
-            Task {
-                do {
-                    let (data, response) = try await URLSession.shared.data(from: requestURL)
-                    guard let httpResponse = response as? HTTPURLResponse,
-                          httpResponse.statusCode == 200 else {
-                              throw PriceListError.invalidServerResponse
-                          }
-                    let decoder = JSONDecoder()
-                    let productData = try decoder.decode(ColesProductData.self, from: data)
-                    let price = round(Double(productData.productData[0].Price)! * 100)/100.0
-                    item.colesPrice = price
-                }
-                catch {
-                    //print("Caught Error: " + error.localizedDescription)
-                    print(String(describing: error))
-                }
-            }
-        }
+        return cell
     }
 
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == SECTION_ITEM {
-            return true
-        } else {
-            return true
-        }
+        true
     }
 
     
@@ -212,17 +161,6 @@ class AllProductsTableViewController: UITableViewController, UISearchResultsUpda
     }
     */
     
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = filteredItems[indexPath.row]
-        let itemAdded = databaseController?.addItemToList(item: item, list: databaseController!.defaultList) ?? false
-        if itemAdded {
-            navigationController?.popViewController(animated: false)
-            return
-        }
-        displayMessage(title: "Item Already in List", message: "The \(item.productName ) is already in your grocery list")
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
     
     
     func displayMessage(title: String, message: String) {
