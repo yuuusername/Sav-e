@@ -11,12 +11,11 @@ import UIKit
 class AllProductsTableViewController: UITableViewController, UISearchBarDelegate {
     let CELL_ITEM = "itemCell"
     let REQUEST_STRING = "https://www.woolworths.com.au/apis/ui/Search/products?searchTerm="
-    let MAX_ITEMS_PER_REQUEST = 40
-    let MAX_REQUESTS = 10
     var currentRequestIndex: Int = 0
     var newItems = [ItemData]()
     var indicator = UIActivityIndicatorView()
     weak var databaseController: DatabaseProtocol?
+    weak var productDelegate: CompareProductDelegate?
     
     override func viewDidLoad() {
         
@@ -45,8 +44,10 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = newItems[indexPath.row]
-        let _ = databaseController?.addProduct(itemData: item)
+        if let productDelegate = productDelegate {
+            let item = newItems[indexPath.row]
+            productDelegate.compareProduct(item)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -55,7 +56,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
         searchURLComponents.scheme = "https"
         searchURLComponents.host = "www.woolworths.com.au"
         searchURLComponents.path = "/apis/ui/Search/products"
-        searchURLComponents.queryItems = [URLQueryItem(name: "maxResults", value: "\(MAX_ITEMS_PER_REQUEST)"), URLQueryItem(name: "startIndex", value: "\(currentRequestIndex * MAX_ITEMS_PER_REQUEST)"), URLQueryItem(name: "searchTerm", value: itemName)]
+        searchURLComponents.queryItems = [URLQueryItem(name: "searchTerm", value: itemName)]
         
         guard let requestURL = searchURLComponents.url else {
             print("Invalid URL.")
@@ -81,10 +82,9 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
-                    if items.count == MAX_ITEMS_PER_REQUEST,
-                       currentRequestIndex + 1 < MAX_REQUESTS {
-                        currentRequestIndex += 1
-                        await requestItemsNamed(itemName)
+                } else {
+                    DispatchQueue.main.async {
+                        self.displayMessage(title: "Sorry, " + itemName + " wasn't found", message: "Check your spelling or use a different query and try again.")
                     }
                 }
             }
@@ -129,9 +129,12 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
         //configure and return a product cell
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
         let item = newItems[indexPath.row]
+        
+        // Configure the cell
         var content = cell.defaultContentConfiguration()
-        cell.textLabel?.text = item.name
-        cell.detailTextLabel?.text = String(item.price!)
+        content.text = item.name
+        content.secondaryText = String(item.price!)
+        cell.contentConfiguration = content
         
         return cell
     }
@@ -162,14 +165,6 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     */
     
     
-    
-    func displayMessage(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-        self.present(alertController, animated: true,completion: nil)
-    }
-    
-    
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
@@ -188,9 +183,11 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     
     // MARK: - Navigation
 
+    /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
+    */
 }

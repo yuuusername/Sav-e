@@ -30,6 +30,7 @@
 		A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */; };
 		FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */; };
 		FC7EB76B282389C100452A80 /* Sav-E-DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB769282389C100452A80 /* Sav-E-DataModel.xcdatamodeld */; };
+		FCA879A42848FEE100E1A611 /* CompareProductDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCountTableViewCell.swift; sourceTree = "<group>"; };
 		FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductDelegate.swift; sourceTree = "<group>"; };
 		FC7EB76A282389C100452A80 /* Sav-E-DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Sav-E-DataModel.xcdatamodel"; sourceTree = "<group>"; };
+		FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareProductDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				A842DC6D2818F98E00285445 /* Assets.xcassets */,
 				A842DC6F2818F98E00285445 /* LaunchScreen.storyboard */,
 				A842DC722818F98E00285445 /* Info.plist */,
+				FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */,
 			);
 			path = "FIT3178-Sav-E";
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			files = (
 				A842DC692818F98C00285445 /* ViewController.swift in Sources */,
 				A8421EB4283DBDE1002B9FA0 /* ProductsData.swift in Sources */,
+				FCA879A42848FEE100E1A611 /* CompareProductDelegate.swift in Sources */,
 				A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */,
 				A8421EB6283DBED1002B9FA0 /* ItemData.swift in Sources */,
 				A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */,

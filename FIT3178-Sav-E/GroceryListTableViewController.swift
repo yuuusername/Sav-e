@@ -125,26 +125,22 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == SECTION_ITEM {
             // Configure and return an item cell
-            let itemCell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
+            let grocery = groceryList[indexPath.row]
             
-            var content = itemCell.defaultContentConfiguration()
-            
-            
-            /*
-            content.text = item.productName
-            if item.colesPrice < item.woolworthsPrice && item.colesPrice != 0.0 {
-                content.secondaryText = String(item.colesPrice)
-            } else if item.woolworthsPrice < item.colesPrice && item.woolworthsPrice != 0.0 {
-                content.secondaryText = String(item.woolworthsPrice)
-            } else if item.woolworthsPrice == item.colesPrice && item.woolworthsPrice != 0.0{
-                content.secondaryText = String(item.woolworthsPrice)
+            // Configure the cell
+            var content = cell.defaultContentConfiguration()
+            content.text = grocery.productName
+            if grocery.woolworthsPrice > grocery.igaPrice {
+                content.secondaryText = String(grocery.igaPrice)
+            } else if grocery.igaPrice > grocery.woolworthsPrice {
+                content.secondaryText = String(grocery.woolworthsPrice)
             } else {
-                content.secondaryText = "Loading prices..."
+                content.secondaryText = String(grocery.woolworthsPrice)
             }
-            itemCell.contentConfiguration = content
-             */
+            cell.contentConfiguration = content
             
-            return itemCell
+            return cell
         } else {
             // Configure and return an info cell instead
             let infoCell = tableView.dequeueReusableCell(withIdentifier: CELL_INFO, for: indexPath) as! ProductCountTableViewCell

@@ -263,7 +263,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="v7d-kr-wpg" kind="show" id="5DQ-jD-qzg"/>
+                                    <segue destination="v7d-kr-wpg" kind="show" identifier="compareProductSegue" id="5DQ-jD-qzg"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="totalCell" id="Gai-gA-230" customClass="ProductCountTableViewCell" customModule="FIT3178_Sav_E" customModuleProvider="target">

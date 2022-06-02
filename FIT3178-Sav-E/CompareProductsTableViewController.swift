@@ -8,6 +8,14 @@
 import UIKit
 import SwiftSoup
 
+extension UIViewController {
+    func displayMessage(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        self.present(alertController, animated: true,completion: nil)
+    }
+}
+
 struct igaItem {
     var name: String
     var price: String
@@ -19,56 +27,136 @@ enum ParserError: Error {
     case invalidData
 }
 
-class CompareProductsTableViewController: UITableViewController {
-    var products: [igaItem] = []
+enum CompareListError: Error {
+    case invalidServerResponse
+}
+
+class CompareProductsTableViewController: UITableViewController, UISearchBarDelegate, CompareProductDelegate {
+    let CELL_ITEM = "itemCell"
+    let REQUEST_STRING = "https://new.igashop.com.au/sm/pickup/rsid/52511/results?q"
+    var currentRequestIndex: Int = 0
+    var products = [igaItem]()
+    var indicator = UIActivityIndicatorView()
+    var listenerType: ListenerType = .list
+    weak var databaseController: DatabaseProtocol?
     
     override func viewDidLoad() {
+        
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.delegate = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search All Products"
+        searchController.searchBar.showsCancelButton = false
+        navigationItem.searchController = searchController
+        
+        // Ensures that the search bar is always visible
+        navigationItem.hidesSearchBarWhenScrolling = false
+        
+        // Add loading indicator view
+        indicator.style = UIActivityIndicatorView.Style.large
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(indicator)
+        NSLayoutConstraint.activate([indicator.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor), indicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)])
+        
+        // This view controller decides how the search controller is presented
+        definesPresentationContext = true
+        
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        databaseController = appDelegate?.databaseController
+    }
+    
+    func compareProduct(_ newProduct: ItemData) {
+        products.removeAll()
+        tableView.reloadData()
+        self.searchDisplayController?.searchBar.text = newProduct.name
+        navigationItem.searchController?.dismiss(animated: true)
+        indicator.startAnimating()
         
         Task {
+            URLSession.shared.invalidateAndCancel()
+            currentRequestIndex = 0
+            await requestItemsNamed(newProduct.name!)
+        }
+    }
+    
+    func requestItemsNamed(_ itemName: String) async {
+        var searchURLComponents = URLComponents()
+        searchURLComponents.scheme = "https"
+        searchURLComponents.host = "new.igashop.com.au"
+        searchURLComponents.path = "/sm/pickup/rsid/52511/results"
+        searchURLComponents.queryItems = [URLQueryItem(name: "q", value: itemName)]
+        
+        guard let requestURL = searchURLComponents.url else {
+            print("Invalid URL.")
+            return
+        }
+        
+        let urlRequest = URLRequest(url: requestURL)
+    
+        do {
+            let (data, response) = try await URLSession.shared.data(for: urlRequest)
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                throw CompareListError.invalidServerResponse
+            }
+            guard let htmlString = String(data: data, encoding: .utf8) else {
+                throw ParserError.invalidData
+            }
+            DispatchQueue.main.async {
+                self.indicator.stopAnimating()
+            }
             do {
-                guard let igaURL = URL(string: "https://new.igashop.com.au/sm/pickup/rsid/52511/results?q=apple") else {
-                    throw ParserError.invalidURL
-                }
-                let (data, _) = try await URLSession.shared.data(from: igaURL)
-                guard let htmlString = String(data: data, encoding: .utf8) else {
-                    throw ParserError.invalidData
-                }
-                
                 let doc: Document = try SwiftSoup.parse(htmlString)
                 
                 let cardElements = try doc.select("article:nth-child(1)")
-                for element: Element in cardElements.array() {
-                    
-                    let name = try element.select("article:nth-child(1) > span:nth-child(7) > div:nth-child(1)").first()?.text()
-                    let formatName = name?.replacingOccurrences(of: "Open product description", with: "")
-                    let price = try element.select("article:nth-child(1) > div:nth-child(9) > span:nth-child(1) > span:nth-child(1)").first()?.text()
-                    let formatPrice = price?.replacingOccurrences(of: " avg/ea", with: "")
-                    let svgURLString = try element.select("img:nth-child(1)").first()?.attr("src")
-                    
-                    if let formatName = formatName, let formatPrice = formatPrice, let svgURLString = svgURLString {
-                        products.append(igaItem(name: formatName, price: formatPrice, jpgURLString: svgURLString))
+                if cardElements.array().count == 0 {
+                    DispatchQueue.main.async {
+                        self.displayMessage(title: "Sorry, " + itemName + " wasn't found", message: "Check your spelling or use a different query and try again.")
                     }
-                    print(try element.text())
-                }
-                
-                await MainActor.run {
-                    self.tableView.reloadData()
+                } else {
+                    for element: Element in cardElements.array() {
+                        
+                        let name = try element.select("article:nth-child(1) > span:nth-child(7) > div:nth-child(1)").first()?.text()
+                        let formatName = name?.replacingOccurrences(of: "Open product description", with: "")
+                        let price = try element.select("article:nth-child(1) > div:nth-child(9) > span:nth-child(1) > span:nth-child(1)").first()?.text()
+                        let formatPrice = price?.replacingOccurrences(of: " avg/ea", with: "")
+                        let svgURLString = try element.select("img:nth-child(1)").first()?.attr("src")
+                        
+                        if let formatName = formatName, let formatPrice = formatPrice, let svgURLString = svgURLString {
+                            products.append(igaItem(name: formatName, price: formatPrice, jpgURLString: svgURLString))
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
                 }
             }
             catch {
-                fatalError(error.localizedDescription)
+                print("Caught Error: " + error.localizedDescription)
             }
         }
-        
+        catch let error {
+            print(error)
+        }
     }
 
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        products.removeAll()
+        tableView.reloadData()
+        
+        guard let searchText = searchBar.text else {
+            return
+        }
+        navigationItem.searchController?.dismiss(animated: true)
+        indicator.startAnimating()
+        
+        Task {
+            URLSession.shared.invalidateAndCancel()
+            currentRequestIndex = 0
+            await requestItemsNamed(searchText)
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,7 +168,7 @@ class CompareProductsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
 
         let benefit = products[indexPath.row]
         
@@ -92,7 +180,13 @@ class CompareProductsTableViewController: UITableViewController {
         
         return cell
     }
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = products[indexPath.row]
+        //let _ = databaseController?.addProduct(itemData: item)
+        //tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -128,14 +222,14 @@ class CompareProductsTableViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "compareProductSegue" {
+            let destination = segue.destination as! AllProductsTableViewController
+            destination.productDelegate = self
+        }
     }
-    */
 
 }
