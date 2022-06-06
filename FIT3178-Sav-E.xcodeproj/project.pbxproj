@@ -11,10 +11,6 @@
 		A8421EB2283DB748002B9FA0 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = A8421EB1283DB748002B9FA0 /* SwiftSoup */; };
 		A8421EB4283DBDE1002B9FA0 /* ProductsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8421EB3283DBDE0002B9FA0 /* ProductsData.swift */; };
 		A8421EB6283DBED1002B9FA0 /* ItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8421EB5283DBED1002B9FA0 /* ItemData.swift */; };
-		A8421EC1283DC485002B9FA0 /* Product+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8421EBD283DC485002B9FA0 /* Product+CoreDataClass.swift */; };
-		A8421EC2283DC485002B9FA0 /* Product+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8421EBE283DC485002B9FA0 /* Product+CoreDataProperties.swift */; };
-		A8421EC3283DC485002B9FA0 /* List+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8421EBF283DC485002B9FA0 /* List+CoreDataClass.swift */; };
-		A8421EC4283DC485002B9FA0 /* List+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8421EC0283DC485002B9FA0 /* List+CoreDataProperties.swift */; };
 		A842DC652818F98C00285445 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC642818F98C00285445 /* AppDelegate.swift */; };
 		A842DC672818F98C00285445 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC662818F98C00285445 /* SceneDelegate.swift */; };
 		A842DC692818F98C00285445 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC682818F98C00285445 /* ViewController.swift */; };
@@ -24,12 +20,8 @@
 		A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */; };
 		A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */; };
 		A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */; };
-		A86DC41D28223A79008EA835 /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86DC41C28223A79008EA835 /* MulticastDelegate.swift */; };
-		A86DC41F28223AC8008EA835 /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86DC41E28223AC8008EA835 /* DatabaseProtocol.swift */; };
-		A86DC42128223BC7008EA835 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A86DC42028223BC7008EA835 /* CoreDataController.swift */; };
 		A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */; };
 		FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */; };
-		FC7EB76B282389C100452A80 /* Sav-E-DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC7EB769282389C100452A80 /* Sav-E-DataModel.xcdatamodeld */; };
 		FCA879A42848FEE100E1A611 /* CompareProductDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,10 +29,6 @@
 		A8421EAB283DB31F002B9FA0 /* CompareProductsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareProductsTableViewController.swift; sourceTree = "<group>"; };
 		A8421EB3283DBDE0002B9FA0 /* ProductsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsData.swift; sourceTree = "<group>"; };
 		A8421EB5283DBED1002B9FA0 /* ItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemData.swift; sourceTree = "<group>"; };
-		A8421EBD283DC485002B9FA0 /* Product+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataClass.swift"; sourceTree = "<group>"; };
-		A8421EBE283DC485002B9FA0 /* Product+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		A8421EBF283DC485002B9FA0 /* List+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataClass.swift"; sourceTree = "<group>"; };
-		A8421EC0283DC485002B9FA0 /* List+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A842DC612818F98C00285445 /* FIT3178-Sav-E.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FIT3178-Sav-E.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A842DC642818F98C00285445 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A842DC662818F98C00285445 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -52,12 +40,8 @@
 		A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryListTableViewController.swift; sourceTree = "<group>"; };
 		A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllProductsTableViewController.swift; sourceTree = "<group>"; };
 		A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectedViewController.swift; sourceTree = "<group>"; };
-		A86DC41C28223A79008EA835 /* MulticastDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
-		A86DC41E28223AC8008EA835 /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
-		A86DC42028223BC7008EA835 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
 		A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCountTableViewCell.swift; sourceTree = "<group>"; };
 		FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductDelegate.swift; sourceTree = "<group>"; };
-		FC7EB76A282389C100452A80 /* Sav-E-DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Sav-E-DataModel.xcdatamodel"; sourceTree = "<group>"; };
 		FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareProductDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,14 +76,13 @@
 		A842DC632818F98C00285445 /* FIT3178-Sav-E */ = {
 			isa = PBXGroup;
 			children = (
-				A86DC41B28223A6B008EA835 /* Database */,
-				A86DC40F28223840008EA835 /* DataModel */,
 				A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */,
 				A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */,
 				A8421EAB283DB31F002B9FA0 /* CompareProductsTableViewController.swift */,
 				A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */,
 				A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */,
 				FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */,
+				FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */,
 				A842DC642818F98C00285445 /* AppDelegate.swift */,
 				A842DC662818F98C00285445 /* SceneDelegate.swift */,
 				A842DC682818F98C00285445 /* ViewController.swift */,
@@ -109,31 +92,8 @@
 				A842DC6D2818F98E00285445 /* Assets.xcassets */,
 				A842DC6F2818F98E00285445 /* LaunchScreen.storyboard */,
 				A842DC722818F98E00285445 /* Info.plist */,
-				FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */,
 			);
 			path = "FIT3178-Sav-E";
-			sourceTree = "<group>";
-		};
-		A86DC40F28223840008EA835 /* DataModel */ = {
-			isa = PBXGroup;
-			children = (
-				A8421EBD283DC485002B9FA0 /* Product+CoreDataClass.swift */,
-				A8421EBE283DC485002B9FA0 /* Product+CoreDataProperties.swift */,
-				A8421EBF283DC485002B9FA0 /* List+CoreDataClass.swift */,
-				A8421EC0283DC485002B9FA0 /* List+CoreDataProperties.swift */,
-				FC7EB769282389C100452A80 /* Sav-E-DataModel.xcdatamodeld */,
-			);
-			path = DataModel;
-			sourceTree = "<group>";
-		};
-		A86DC41B28223A6B008EA835 /* Database */ = {
-			isa = PBXGroup;
-			children = (
-				A86DC41C28223A79008EA835 /* MulticastDelegate.swift */,
-				A86DC41E28223AC8008EA835 /* DatabaseProtocol.swift */,
-				A86DC42028223BC7008EA835 /* CoreDataController.swift */,
-			);
-			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,19 +180,11 @@
 				A8421EB6283DBED1002B9FA0 /* ItemData.swift in Sources */,
 				A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */,
 				A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */,
-				FC7EB76B282389C100452A80 /* Sav-E-DataModel.xcdatamodeld in Sources */,
 				A8421EAC283DB31F002B9FA0 /* CompareProductsTableViewController.swift in Sources */,
-				A8421EC2283DC485002B9FA0 /* Product+CoreDataProperties.swift in Sources */,
 				FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */,
-				A8421EC3283DC485002B9FA0 /* List+CoreDataClass.swift in Sources */,
-				A8421EC4283DC485002B9FA0 /* List+CoreDataProperties.swift in Sources */,
 				A842DC652818F98C00285445 /* AppDelegate.swift in Sources */,
 				A842DC672818F98C00285445 /* SceneDelegate.swift in Sources */,
-				A8421EC1283DC485002B9FA0 /* Product+CoreDataClass.swift in Sources */,
-				A86DC41D28223A79008EA835 /* MulticastDelegate.swift in Sources */,
-				A86DC42128223BC7008EA835 /* CoreDataController.swift in Sources */,
 				A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */,
-				A86DC41F28223AC8008EA835 /* DatabaseProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,19 +421,6 @@
 			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		FC7EB769282389C100452A80 /* Sav-E-DataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				FC7EB76A282389C100452A80 /* Sav-E-DataModel.xcdatamodel */,
-			);
-			currentVersion = FC7EB76A282389C100452A80 /* Sav-E-DataModel.xcdatamodel */;
-			path = "Sav-E-DataModel.xcdatamodeld";
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = A842DC592818F98C00285445 /* Project object */;
 }

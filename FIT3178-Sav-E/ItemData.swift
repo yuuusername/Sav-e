@@ -10,23 +10,33 @@ import Foundation
 class ItemData: NSObject, Decodable {
     var name: String?
     var price: Double?
+    var wasPrice: Double?
     
     private enum RootKeys: String, CodingKey {
         case Products
     }
     
     private struct ProductDetails: Decodable {
-        var Name: StringLiteralType
-        var Price: Double
+        var DisplayName: StringLiteralType
+        var Price: Double?
+        var WasPrice: Double?
     }
     
     required init(from decoder: Decoder) throws {
         let itemContainer = try decoder.container(keyedBy: RootKeys.self)
-        // Get item info
-        let productArray = try itemContainer.decode([ProductDetails].self, forKey: .Products)
-        for code in productArray {
-            name = code.Name
-            price = code.Price
+        // Get item info
+        if let productArray = try? itemContainer.decode([ProductDetails].self, forKey: .Products) {
+            for code in productArray {
+                if code.Price != nil {
+                    name = code.DisplayName
+                    price = code.Price
+                    wasPrice = code.WasPrice
+                } else {
+                    name = code.DisplayName
+                    price = 0.0
+                    wasPrice = code.WasPrice
+                }
+            }
         }
     }
 }

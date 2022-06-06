@@ -18,7 +18,7 @@ extension UIViewController {
 
 struct igaItem {
     var name: String
-    var price: String
+    var price: Double
     var jpgURLString: String
 }
 
@@ -31,13 +31,15 @@ enum CompareListError: Error {
     case invalidServerResponse
 }
 
-class CompareProductsTableViewController: UITableViewController, UISearchBarDelegate, CompareProductDelegate {
+class CompareProductsTableViewController: UITableViewController, UISearchBarDelegate {
     let CELL_ITEM = "itemCell"
-    let REQUEST_STRING = "https://new.igashop.com.au/sm/pickup/rsid/52511/results?q"
     var currentRequestIndex: Int = 0
     var products = [igaItem]()
+    var comparisonProd = [ItemData]()
     var indicator = UIActivityIndicatorView()
     var listenerType: ListenerType = .list
+    weak var compItemData: ItemData?
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     weak var databaseController: DatabaseProtocol?
     
     override func viewDidLoad() {
@@ -60,8 +62,8 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
         
         // This view controller decides how the search controller is presented
         definesPresentationContext = true
-        
         super.viewDidLoad()
+        compareProduct(appDelegate.compItemData!)
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate?.databaseController
     }
@@ -69,7 +71,6 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
     func compareProduct(_ newProduct: ItemData) {
         products.removeAll()
         tableView.reloadData()
-        self.searchDisplayController?.searchBar.text = newProduct.name
         navigationItem.searchController?.dismiss(animated: true)
         indicator.startAnimating()
         
@@ -123,7 +124,7 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
                         let svgURLString = try element.select("img:nth-child(1)").first()?.attr("src")
                         
                         if let formatName = formatName, let formatPrice = formatPrice, let svgURLString = svgURLString {
-                            products.append(igaItem(name: formatName, price: formatPrice, jpgURLString: svgURLString))
+                            products.append(igaItem(name: formatName, price: Double(formatPrice.dropFirst()) ?? 0, jpgURLString: svgURLString))
                             DispatchQueue.main.async {
                                 self.tableView.reloadData()
                             }
@@ -169,13 +170,15 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
-
-        let benefit = products[indexPath.row]
+        let item = products[indexPath.row]
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .currency
         
         // Configure the cell...
         var content = cell.defaultContentConfiguration()
-        content.text = benefit.name
-        content.secondaryText = benefit.price
+        content.text = item.name
+        content.secondaryText = formatter.string(for: item.price)
         cell.contentConfiguration = content
         
         return cell
@@ -222,14 +225,14 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
     }
     */
 
+    /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "compareProductSegue" {
             let destination = segue.destination as! AllProductsTableViewController
-            destination.productDelegate = self
+            compItemData = destination.itemSelected
         }
     }
-
+    */
 }

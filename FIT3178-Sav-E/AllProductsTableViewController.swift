@@ -10,14 +10,16 @@ import UIKit
 
 class AllProductsTableViewController: UITableViewController, UISearchBarDelegate {
     let CELL_ITEM = "itemCell"
-    let REQUEST_STRING = "https://www.woolworths.com.au/apis/ui/Search/products?searchTerm="
     var currentRequestIndex: Int = 0
-    var newItems = [ItemData]()
+    var woolworthsItems = [ItemData]()
     var indicator = UIActivityIndicatorView()
-    weak var databaseController: DatabaseProtocol?
     weak var productDelegate: CompareProductDelegate?
+    weak var databaseController: DatabaseProtocol?
+    var itemSelected: ItemData?
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
+        appDelegate.woolworthsItems.removeAll()
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self
@@ -44,10 +46,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let productDelegate = productDelegate {
-            let item = newItems[indexPath.row]
-            productDelegate.compareProduct(item)
-        }
+        appDelegate.compItemData = appDelegate.woolworthsItems[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -56,7 +55,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
         searchURLComponents.scheme = "https"
         searchURLComponents.host = "www.woolworths.com.au"
         searchURLComponents.path = "/apis/ui/Search/products"
-        searchURLComponents.queryItems = [URLQueryItem(name: "searchTerm", value: itemName)]
+        searchURLComponents.queryItems = [URLQueryItem(name: "pageSize", value: "36"), URLQueryItem(name: "searchTerm", value: itemName)]
         
         guard let requestURL = searchURLComponents.url else {
             print("Invalid URL.")
@@ -78,7 +77,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
                 let decoder = JSONDecoder()
                 let productsData = try decoder.decode(ProductsData.self, from: data)
                 if let items = productsData.products {
-                    newItems.append(contentsOf: items)
+                    appDelegate.woolworthsItems.append(contentsOf: items)
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -89,7 +88,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
                 }
             }
             catch {
-                print("Caught Error: " + error.localizedDescription)
+                print(error)
             }
         }
         catch let error {
@@ -98,7 +97,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        newItems.removeAll()
+        appDelegate.woolworthsItems.removeAll()
         tableView.reloadData()
         
         guard let searchText = searchBar.text?.lowercased() else {
@@ -121,20 +120,29 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return newItems.count
+        return appDelegate.woolworthsItems.count
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //configure and return a product cell
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
-        let item = newItems[indexPath.row]
+        let item = appDelegate.woolworthsItems[indexPath.row]
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .currency
         
         // Configure the cell
         var content = cell.defaultContentConfiguration()
-        content.text = item.name
-        content.secondaryText = String(item.price!)
-        cell.contentConfiguration = content
+        if item.price != nil {
+            content.text = item.name
+            if item.price == 0.0 {
+                content.secondaryText = formatter.string(for: item.wasPrice!)
+            } else {
+                content.secondaryText = formatter.string(for: item.price!)
+            }
+            cell.contentConfiguration = content
+        }
         
         return cell
     }
@@ -142,7 +150,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        true
+        false
     }
 
     
@@ -180,14 +188,15 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     }
     */
 
-    
+    /*
     // MARK: - Navigation
 
-    /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if (segue.identifier == "compareProductSegue") {
+            let destination = segue.destination as! CompareProductsTableViewController
+            destination.compItemData = itemSelected
+        }
     }
     */
 }
