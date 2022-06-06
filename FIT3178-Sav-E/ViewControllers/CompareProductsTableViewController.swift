@@ -188,7 +188,7 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
         let item = databaseController?.addProduct(name: appDelegate.compItemData!.name!, igaPrice: products[indexPath.row].price, woolworthsPrice: appDelegate.compItemData!.price!)
         let itemAdded = databaseController?.addItemToList(item: item!, list: databaseController!.defaultList) ?? false
         if itemAdded {
-            navigationController?.popViewController(animated: false)
+            navigationController?.popToRootViewController(animated: true)
             return
         }
         displayMessage(title: "\(item!.name ?? "That item") is already in your grocery list", message: "Please remove the item from your list first before adding it again")

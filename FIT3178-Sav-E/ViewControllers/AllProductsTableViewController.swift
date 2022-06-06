@@ -8,6 +8,11 @@
 import UIKit
 
 
+enum PriceListError: Error {
+    case invalidServerResponse
+}
+
+
 class AllProductsTableViewController: UITableViewController, UISearchBarDelegate {
     let CELL_ITEM = "itemCell"
     var currentRequestIndex: Int = 0

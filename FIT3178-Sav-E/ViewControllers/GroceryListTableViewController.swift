@@ -8,63 +8,6 @@
 import UIKit
 
 
-enum PriceListError: Error {
-    case invalidServerResponse
-}
-
-
-// MARK: - Product Data Decoding
-// Woolworhts Product Data Decoding
-class WoolworthsProductPrice: Codable {
-    var Price: Double
-    
-    private enum RootKeys: String, CodingKey {
-        case Product
-    }
-    
-    required init(from decoder: Decoder) throws {
-        // Get root container
-        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
-        let priceContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .Product)
-        self.Price = try priceContainer.decode(Double.self, forKey: .Price)
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case Price
-    }
-}
-
-// Coles Product Data Decoding
-class ColesProductData: Decodable {
-    var productData: [ColesProductPrice]
-    private enum CodingKeys: String, CodingKey {
-        case productData = "catalogEntryView"
-    }
-}
-
-class ColesProductPrice: Codable {
-    var Price: String
-    
-    private enum RootKeys: String, CodingKey {
-        case Price = "p1"
-    }
-    
-    private enum CodingKeys: String, CodingKey {
-        case Price = "o"
-    }
-    
-    required init(from decoder: Decoder) throws {
-        // Get root container
-        let rootContainer = try decoder.container(keyedBy: RootKeys.self)
-        // Get price container
-        let priceContainer = try rootContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .Price)
-        // Get price value
-        self.Price = try priceContainer.decode(String.self, forKey: .Price)
-    }
-    
-}
-
-
 // MARK: - Table View Controller
 class GroceryListTableViewController: UITableViewController, DatabaseListener {
     let SECTION_ITEM = 0
@@ -125,21 +68,27 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == SECTION_ITEM {
             // Configure and return an item cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath) as! ProductTableViewCell
             let grocery = groceryList[indexPath.row]
+            let formatter = NumberFormatter()
+            formatter.locale = Locale.current
+            formatter.numberStyle = .currency
             
             // Configure the cell
-            var content = cell.defaultContentConfiguration()
-            content.text = grocery.name
+            cell.nameLabel.text = grocery.name
             if grocery.woolworthsPrice > grocery.igaPrice {
-                content.secondaryText = String(grocery.igaPrice)
+                cell.priceLabel.text = formatter.string(for: grocery.igaPrice)
+                cell.supermarketLabel.text = "IGA"
+                cell.priceLabel.textColor = UIColor(red: 0.60, green: 0.14, blue: 0.14, alpha: 1.00)
             } else if grocery.igaPrice > grocery.woolworthsPrice {
-                content.secondaryText = String(grocery.woolworthsPrice)
+                cell.priceLabel.text = formatter.string(for: grocery.woolworthsPrice)
+                cell.supermarketLabel.text = "Woolworths"
+                cell.priceLabel.textColor = UIColor(red: 0.07, green: 0.33, blue: 0.19, alpha: 1.00)
             } else {
-                content.secondaryText = String(grocery.woolworthsPrice)
+                cell.priceLabel.text = formatter.string(for: grocery.woolworthsPrice)
+                cell.supermarketLabel.text = "Both"
+                cell.priceLabel.textColor = UIColor(red: 0.55, green: 0.45, blue: 0.00, alpha: 1.00)
             }
-            cell.contentConfiguration = content
-            
             return cell
         } else {
             // Configure and return an info cell instead
@@ -183,52 +132,8 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
         return databaseController?.addItemToList(item: newItem, list: databaseController!.defaultList) ?? false
     }
     
-    
-    /*
-    func woolworthsPriceGetter(woolworthsId: String) -> Bool {
-        let requestURL = URL(string: "https://www.woolworths.com.au/api/v3/ui/schemaorg/product/\(woolworthsId)")
-        if let requestURL = requestURL {
-            Task { () -> Bool in
-                
-                do {
-                    let (data, response) = try await URLSession.shared.data(from: requestURL)
-                    guard let httpResponse = response as? HTTPURLResponse,
-                          httpResponse.statusCode == 200 else {
-                              throw PriceListError.invalidServerResponse
-                          }
-                    let decoder = JSONDecoder()
-                    let item = try decoder.decode(ProductPrice.self, from: data)
-                    woolworthsPrice = item.price
-                    tableView.reloadData()
-                    return true
-                }
-                catch {
-                    //print("Caught Error: " + error.localizedDescription)
-                    print(String(describing: error))
-                    return false
-                }
-            }
-        }
-        return false
-    }
-    */
-    
-    
-    /*
-    // DEPRECIATED
-    //Add test products
-    func testProducts() {
-        groceryList.append(Product(name: "Apples", price: 3.00, supermarket: .coles))
-        groceryList.append(Product(name: "Oranges", price: 7.99, supermarket: .coles))
-        groceryList.append(Product(name: "2L Milk", price: 10.23, supermarket: .coles))
-        groceryList.append(Product(name: "Eggs", price: 1.00, supermarket: .coles))
-        groceryList.append(Product(name: "Coke", price: 12.00, supermarket: .coles))
-    }
-    */
-    
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        }
+    }
     
     /*
     // Override to support rearranging the table view.

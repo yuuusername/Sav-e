@@ -106,10 +106,9 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     }
     
     func addItemToList(item: Product, list: List) -> Bool {
-        guard let items = list.items, items.contains(item) == false else {
+        guard list.items != nil else {
             return false
         }
-        
         list.addToItems(item)
         return true
     }
