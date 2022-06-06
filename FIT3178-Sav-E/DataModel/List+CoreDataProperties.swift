@@ -2,7 +2,7 @@
 //  List+CoreDataProperties.swift
 //  FIT3178-Sav-E
 //
-//  Created by Dylan Hor on 25/5/2022.
+//  Created by Dylan Hor on 6/6/2022.
 //
 //
 

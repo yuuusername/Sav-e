@@ -22,6 +22,14 @@
 		A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */; };
 		A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */; };
 		FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */; };
+		FC6E052F284DD6DD00108224 /* Sav_E-DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC6E052D284DD6DD00108224 /* Sav_E-DataModel.xcdatamodeld */; };
+		FC6E053C284DDA1700108224 /* List+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E0538284DDA1700108224 /* List+CoreDataClass.swift */; };
+		FC6E053D284DDA1700108224 /* List+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E0539284DDA1700108224 /* List+CoreDataProperties.swift */; };
+		FC6E053E284DDA1700108224 /* Product+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E053A284DDA1700108224 /* Product+CoreDataClass.swift */; };
+		FC6E053F284DDA1700108224 /* Product+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E053B284DDA1700108224 /* Product+CoreDataProperties.swift */; };
+		FC6E0542284DDAC500108224 /* MulticastDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E0541284DDAC500108224 /* MulticastDelegate.swift */; };
+		FC6E0544284DDADE00108224 /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E0543284DDADE00108224 /* DatabaseProtocol.swift */; };
+		FC6E0546284DDC5200108224 /* CoreDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6E0545284DDC5200108224 /* CoreDataController.swift */; };
 		FCA879A42848FEE100E1A611 /* CompareProductDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +50,14 @@
 		A842DC7E28190F1A00285445 /* ItemSelectedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectedViewController.swift; sourceTree = "<group>"; };
 		A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCountTableViewCell.swift; sourceTree = "<group>"; };
 		FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductDelegate.swift; sourceTree = "<group>"; };
+		FC6E052E284DD6DD00108224 /* Sav_E-DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Sav_E-DataModel.xcdatamodel"; sourceTree = "<group>"; };
+		FC6E0538284DDA1700108224 /* List+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataClass.swift"; sourceTree = "<group>"; };
+		FC6E0539284DDA1700108224 /* List+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FC6E053A284DDA1700108224 /* Product+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataClass.swift"; sourceTree = "<group>"; };
+		FC6E053B284DDA1700108224 /* Product+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FC6E0541284DDAC500108224 /* MulticastDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MulticastDelegate.swift; sourceTree = "<group>"; };
+		FC6E0543284DDADE00108224 /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
+		FC6E0545284DDC5200108224 /* CoreDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataController.swift; sourceTree = "<group>"; };
 		FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompareProductDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -76,6 +92,8 @@
 		A842DC632818F98C00285445 /* FIT3178-Sav-E */ = {
 			isa = PBXGroup;
 			children = (
+				FC6E0540284DDA8800108224 /* Database */,
+				FC6E052C284DD69D00108224 /* DataModel */,
 				A842DC7A28190DCE00285445 /* GroceryListTableViewController.swift */,
 				A842DC7C28190EF700285445 /* AllProductsTableViewController.swift */,
 				A8421EAB283DB31F002B9FA0 /* CompareProductsTableViewController.swift */,
@@ -94,6 +112,28 @@
 				A842DC722818F98E00285445 /* Info.plist */,
 			);
 			path = "FIT3178-Sav-E";
+			sourceTree = "<group>";
+		};
+		FC6E052C284DD69D00108224 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				FC6E0538284DDA1700108224 /* List+CoreDataClass.swift */,
+				FC6E0539284DDA1700108224 /* List+CoreDataProperties.swift */,
+				FC6E053A284DDA1700108224 /* Product+CoreDataClass.swift */,
+				FC6E053B284DDA1700108224 /* Product+CoreDataProperties.swift */,
+				FC6E052D284DD6DD00108224 /* Sav_E-DataModel.xcdatamodeld */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		FC6E0540284DDA8800108224 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				FC6E0541284DDAC500108224 /* MulticastDelegate.swift */,
+				FC6E0543284DDADE00108224 /* DatabaseProtocol.swift */,
+				FC6E0545284DDC5200108224 /* CoreDataController.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,17 +214,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				A842DC692818F98C00285445 /* ViewController.swift in Sources */,
+				FC6E053D284DDA1700108224 /* List+CoreDataProperties.swift in Sources */,
+				FC6E0546284DDC5200108224 /* CoreDataController.swift in Sources */,
+				FC6E052F284DD6DD00108224 /* Sav_E-DataModel.xcdatamodeld in Sources */,
 				A8421EB4283DBDE1002B9FA0 /* ProductsData.swift in Sources */,
 				FCA879A42848FEE100E1A611 /* CompareProductDelegate.swift in Sources */,
 				A842DC7D28190EF700285445 /* AllProductsTableViewController.swift in Sources */,
 				A8421EB6283DBED1002B9FA0 /* ItemData.swift in Sources */,
 				A842DC7B28190DCE00285445 /* GroceryListTableViewController.swift in Sources */,
+				FC6E053C284DDA1700108224 /* List+CoreDataClass.swift in Sources */,
 				A842DC7F28190F1A00285445 /* ItemSelectedViewController.swift in Sources */,
 				A8421EAC283DB31F002B9FA0 /* CompareProductsTableViewController.swift in Sources */,
+				FC6E053F284DDA1700108224 /* Product+CoreDataProperties.swift in Sources */,
+				FC6E053E284DDA1700108224 /* Product+CoreDataClass.swift in Sources */,
 				FC4ADD2528200FCA00DF95C6 /* AddProductDelegate.swift in Sources */,
 				A842DC652818F98C00285445 /* AppDelegate.swift in Sources */,
 				A842DC672818F98C00285445 /* SceneDelegate.swift in Sources */,
 				A8AC94B0281FA4F400B68907 /* ProductCountTableViewCell.swift in Sources */,
+				FC6E0544284DDADE00108224 /* DatabaseProtocol.swift in Sources */,
+				FC6E0542284DDAC500108224 /* MulticastDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +469,19 @@
 			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		FC6E052D284DD6DD00108224 /* Sav_E-DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FC6E052E284DD6DD00108224 /* Sav_E-DataModel.xcdatamodel */,
+			);
+			currentVersion = FC6E052E284DD6DD00108224 /* Sav_E-DataModel.xcdatamodel */;
+			path = "Sav_E-DataModel.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A842DC592818F98C00285445 /* Project object */;
 }

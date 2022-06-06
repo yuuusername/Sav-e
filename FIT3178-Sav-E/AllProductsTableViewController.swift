@@ -14,7 +14,6 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     var woolworthsItems = [ItemData]()
     var indicator = UIActivityIndicatorView()
     weak var productDelegate: CompareProductDelegate?
-    weak var databaseController: DatabaseProtocol?
     var itemSelected: ItemData?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -41,8 +40,6 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
         definesPresentationContext = true
         
         super.viewDidLoad()
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        databaseController = appDelegate?.databaseController
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

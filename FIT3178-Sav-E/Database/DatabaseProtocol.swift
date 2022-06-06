@@ -2,7 +2,7 @@
 //  DatabaseProtocol.swift
 //  FIT3178-Sav-E
 //
-//  Created by Dylan Hor on 4/5/2022.
+//  Created by Dylan Hor on 6/6/2022.
 //
 
 import Foundation
@@ -31,7 +31,7 @@ protocol DatabaseProtocol: AnyObject {
     func addListener(listener: DatabaseListener)
     func removeListener(listener: DatabaseListener)
     
-    func addProduct(itemData: ItemData) -> Product
+    func addProduct(name: String, igaPrice: Double, woolworthsPrice: Double) -> Product
     func deleteProduct(item: Product)
     
     var defaultList: List {get}
@@ -41,4 +41,3 @@ protocol DatabaseProtocol: AnyObject {
     func addItemToList(item: Product, list: List) -> Bool
     func removeItemFromList(item: Product, list: List)
 }
-

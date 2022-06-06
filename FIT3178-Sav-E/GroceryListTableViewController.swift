@@ -130,7 +130,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             
             // Configure the cell
             var content = cell.defaultContentConfiguration()
-            content.text = grocery.productName
+            content.text = grocery.name
             if grocery.woolworthsPrice > grocery.igaPrice {
                 content.secondaryText = String(grocery.igaPrice)
             } else if grocery.igaPrice > grocery.woolworthsPrice {

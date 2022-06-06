@@ -31,13 +31,13 @@ enum CompareListError: Error {
     case invalidServerResponse
 }
 
-class CompareProductsTableViewController: UITableViewController, UISearchBarDelegate {
+class CompareProductsTableViewController: UITableViewController, UISearchBarDelegate, DatabaseListener {
     let CELL_ITEM = "itemCell"
     var currentRequestIndex: Int = 0
     var products = [igaItem]()
     var comparisonProd = [ItemData]()
     var indicator = UIActivityIndicatorView()
-    var listenerType: ListenerType = .list
+    var listenerType = ListenerType.items
     weak var compItemData: ItemData?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     weak var databaseController: DatabaseProtocol?
@@ -185,9 +185,35 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = products[indexPath.row]
+        let item = databaseController?.addProduct(name: appDelegate.compItemData!.name!, igaPrice: products[indexPath.row].price, woolworthsPrice: appDelegate.compItemData!.price!)
+        let itemAdded = databaseController?.addItemToList(item: item!, list: databaseController!.defaultList) ?? false
+        if itemAdded {
+            navigationController?.popViewController(animated: false)
+            return
+        }
+        displayMessage(title: "\(item!.name ?? "That item") is already in your grocery list", message: "Please remove the item from your list first before adding it again")
+        tableView.deselectRow(at: indexPath, animated: true)
         //let _ = databaseController?.addProduct(itemData: item)
         //tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: - DatabaseProtocol Methods
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        databaseController?.addListener(listener: self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        databaseController?.removeListener(listener: self)
+    }
+    
+    func onAllItemsChange(change: DatabaseChange, items: [Product]) {
+        
+    }
+    
+    func onListChange(change: DatabaseChange, listItems: [Product]) {
+        // Do nothing
     }
     
     /*

@@ -2,25 +2,24 @@
 //  CoreDataController.swift
 //  FIT3178-Sav-E
 //
-//  Created by Dylan Hor on 4/5/2022.
+//  Created by Dylan Hor on 6/6/2022.
 //
 
 import UIKit
 import CoreData
 
 class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsControllerDelegate {
-    
-    let DEFAULT_LIST_NAME = "Default List"
-    var listItemsFetchedResultsController: NSFetchedResultsController<Product>?
-    var allItemsFetchedResultsController: NSFetchedResultsController<Product>?
     var listeners = MulticastDelegate<DatabaseListener>()
     var persistentContainer: NSPersistentContainer
-
+    var allItemsFetchedResultsController: NSFetchedResultsController<Product>?
+    let DEFAULT_LIST_NAME = "Default List"
+    var listItemsFetchedResultsController: NSFetchedResultsController<Product>?
+    
     override init() {
-        persistentContainer = NSPersistentContainer(name: "Sav-E-DataModel")
+        persistentContainer = NSPersistentContainer(name: "Sav_E-DataModel")
         persistentContainer.loadPersistentStores() { (description, error) in
-            if let error = error {
-            fatalError("Failed to load Core Data Stack with error: \(error)")
+            if let error = error{
+                fatalError("Failed to load Core Data Stack with error: \(error)")
             }
         }
         super.init()
@@ -46,19 +45,53 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
         return addList(listName: DEFAULT_LIST_NAME)
     }()
     
-    // MARK: - Database Adoption
-    func addProduct(itemData: ItemData) -> Product {
+    // MARK: - DatabaseProtocol Methods
+    func cleanup() {
+        if persistentContainer.viewContext.hasChanges {
+            do {
+                try persistentContainer.viewContext.save()
+            } catch {
+                fatalError("Failed to save changes to Core Data with error: \(error)")
+            }
+        }
+    }
+    
+    func addProduct(name: String, igaPrice: Double, woolworthsPrice: Double) -> Product {
         let item = NSEntityDescription.insertNewObject(forEntityName: "Product", into: persistentContainer.viewContext) as! Product
-        
-        item.productName = item.productName
-        item.woolworthsPrice = item.woolworthsPrice
-        item.igaPrice = item.igaPrice
+        item.name = name
+        item.igaPrice = igaPrice
+        item.woolworthsPrice = woolworthsPrice
         
         return item
     }
     
     func deleteProduct(item: Product) {
         persistentContainer.viewContext.delete(item)
+    }
+    
+    func fetchAllItems() -> [Product] {
+        if allItemsFetchedResultsController == nil {
+            let request: NSFetchRequest<Product> = Product.fetchRequest()
+            let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+            request.sortDescriptors = [nameSortDescriptor]
+            
+            // Initialise Fetched Results Controller
+            allItemsFetchedResultsController = NSFetchedResultsController<Product>(fetchRequest: request, managedObjectContext: persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+            
+            // Set this class to be the results delegate
+            allItemsFetchedResultsController?.delegate = self
+            
+            do {
+                try allItemsFetchedResultsController?.performFetch()
+            } catch {
+                print("Fetch Request Failed: \(error)")
+            }
+        }
+        
+        if let items = allItemsFetchedResultsController?.fetchedObjects {
+            return items
+        }
+        return [Product]()
     }
     
     func addList(listName: String) -> List {
@@ -88,7 +121,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     func fetchListItems() -> [Product] {
         if listItemsFetchedResultsController == nil {
             let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
-            let nameSortDescriptor = NSSortDescriptor(key: "productName", ascending: true)
+            let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
             let predicate = NSPredicate(format: "ANY lists.name == %@", DEFAULT_LIST_NAME)
             fetchRequest.sortDescriptors = [nameSortDescriptor]
             fetchRequest.predicate = predicate
@@ -97,7 +130,6 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
                 NSFetchedResultsController<Product>(fetchRequest: fetchRequest,
                 managedObjectContext: persistentContainer.viewContext,
                 sectionNameKeyPath: nil, cacheName: nil)
-            
             listItemsFetchedResultsController?.delegate = self
             
             do {
@@ -115,48 +147,12 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
         return items
     }
     
-    func cleanup() {
-        if persistentContainer.viewContext.hasChanges {
-            do {
-                try persistentContainer.viewContext.save()
-            } catch {
-                fatalError("Failed to save changes to Core Data with error: \(error)")
-            }
-        }
-    }
-    
-    func fetchAllItems() -> [Product] {
-        if allItemsFetchedResultsController == nil {
-            let request: NSFetchRequest<Product> = Product.fetchRequest()
-            let nameSortDescriptor = NSSortDescriptor(key: "productName", ascending: true)
-            request.sortDescriptors = [nameSortDescriptor]
-            
-            // Initialise Fetched Results Controller
-            allItemsFetchedResultsController = NSFetchedResultsController<Product>(fetchRequest: request, managedObjectContext: persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-            
-            // Set this class to be the results delegate
-            allItemsFetchedResultsController?.delegate = self
-            
-            do {
-                try allItemsFetchedResultsController?.performFetch()
-            } catch {
-                print("Fetch Request Failed: \(error)")
-            }
-        }
-        
-        if let items = allItemsFetchedResultsController?.fetchedObjects {
-            return items
-        }
-        return [Product]()
-    }
-    
     func addListener(listener: DatabaseListener) {
         listeners.addDelegate(listener)
         
         if listener.listenerType == .items || listener.listenerType == .all {
             listener.onAllItemsChange(change: .update, items: fetchAllItems())
         }
-        
         if listener.listenerType == .list || listener.listenerType == .all {
             listener.onListChange(change: .update, listItems: fetchListItems())
         }
@@ -166,15 +162,12 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
         listeners.removeDelegate(listener)
     }
     
-    //MARK: - Fetched Results Controller Protocol methods
-    
-    func controllerDidChangeContent(_ controller:
-        NSFetchedResultsController<NSFetchRequestResult>) {
+    // MARK: - Fetched Results Controller Protocol Methods
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         
         if controller == allItemsFetchedResultsController {
             listeners.invoke() { listener in
-                if listener.listenerType == .items
-                    || listener.listenerType == .all {
+                if listener.listenerType == .items || listener.listenerType == .all {
                     
                     listener.onAllItemsChange(change: .update, items: fetchAllItems())
                 }
@@ -187,4 +180,5 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
             }
         }
     }
+    
 }

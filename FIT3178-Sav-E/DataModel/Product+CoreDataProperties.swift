@@ -2,7 +2,7 @@
 //  Product+CoreDataProperties.swift
 //  FIT3178-Sav-E
 //
-//  Created by Dylan Hor on 25/5/2022.
+//  Created by Dylan Hor on 6/6/2022.
 //
 //
 
@@ -16,9 +16,9 @@ extension Product {
         return NSFetchRequest<Product>(entityName: "Product")
     }
 
-    @NSManaged public var productName: String?
-    @NSManaged public var woolworthsPrice: Double
+    @NSManaged public var name: String?
     @NSManaged public var igaPrice: Double
+    @NSManaged public var woolworthsPrice: Double
     @NSManaged public var lists: NSSet?
 
 }
