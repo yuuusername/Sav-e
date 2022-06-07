@@ -186,6 +186,7 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = databaseController?.addProduct(name: appDelegate.compItemData!.name!, igaPrice: products[indexPath.row].price, woolworthsPrice: appDelegate.compItemData!.price!)
+        appDelegate.addedItem = item
         let itemAdded = databaseController?.addItemToList(item: item!, list: databaseController!.defaultList) ?? false
         if itemAdded {
             navigationController?.popToRootViewController(animated: true)

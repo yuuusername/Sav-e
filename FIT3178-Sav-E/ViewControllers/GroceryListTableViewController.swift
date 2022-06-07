@@ -16,20 +16,27 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     let CELL_INFO = "totalCell"
     var groceryList: [Product] = []
     var listenerType: ListenerType = .list
-    var woolworthsId: String?
-    var woolworthsPrice: Double = 0.0
+    var itemAdded: Product?
     weak var databaseController: DatabaseProtocol?
+    static let NOTIFICATION_IDENTIFIER = "edu.monash.fit3178.sav-e"
+    lazy var appDelegate = { return UIApplication.shared.delegate as! AppDelegate }()
     
     override func viewDidLoad() {
         //testProducts()
         super.viewDidLoad()
         
+        if let response = UserDefaults.standard.string(forKey: "response") {
+            print("There was a stored response: \(response)")
+        } else {
+            print("No stored response")
+        }
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate?.databaseController
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        specialCheck()
         databaseController?.addListener(listener: self)
     }
     
@@ -45,6 +52,36 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     func onListChange(change: DatabaseChange, listItems: [Product]) {
         groceryList = listItems
         tableView.reloadData()
+    }
+    
+    func specialCheck() {
+        guard appDelegate.notificationsEnabled == true else {
+            print("Notifications are disabled")
+            return
+        }
+        
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .currency
+        let content = UNMutableNotificationContent()
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
+        
+        if let itemAdded = appDelegate.addedItem {
+            if itemAdded.woolworthsPrice < itemAdded.igaPrice && itemAdded.woolworthsPrice/itemAdded.igaPrice <= 0.5 {
+                content.title = "\(itemAdded.name ?? "The item you just added") is half price!"
+                content.body = "\(itemAdded.name ?? "The item") is now \(formatter.string(for: itemAdded.woolworthsPrice) ?? "on sale") at Woolworths!"
+                let request = UNNotificationRequest(identifier: GroceryListTableViewController.NOTIFICATION_IDENTIFIER, content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                print("Notification sent")
+            } else if itemAdded.igaPrice < itemAdded.woolworthsPrice && itemAdded.igaPrice/itemAdded.woolworthsPrice <= 0.5 {
+                content.title = "\(itemAdded.name ?? "The item you just added") is half price!"
+                content.body = "\(itemAdded.name ?? "The item") is now \(formatter.string(for: itemAdded.igaPrice) ?? "on sale") at IGA!"
+                let request = UNNotificationRequest(identifier: GroceryListTableViewController.NOTIFICATION_IDENTIFIER, content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                print("Notification sent")
+            }
+            
+        }
     }
     
     // MARK: - Table view data source
@@ -129,6 +166,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     }
     
     func addProduct(_ newItem: Product) -> Bool {
+        itemAdded = newItem
         return databaseController?.addItemToList(item: newItem, list: databaseController!.defaultList) ?? false
     }
     
