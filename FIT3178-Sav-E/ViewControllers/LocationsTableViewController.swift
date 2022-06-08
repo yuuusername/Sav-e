@@ -26,15 +26,6 @@ class LocationsTableViewController: UITableViewController, CLLocationManagerDele
         igaLocations()
         super.viewDidLoad()
         
-        locationManager.delegate = self
-        
-        if locationManager.authorizationStatus == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
-        latitude = locationManager.location?.coordinate.latitude
-        longitude = locationManager.location?.coordinate.longitude
-        curLocation = CLLocation(latitude: latitude!, longitude: longitude!)
-        
         self.locationList.sort(by: {$0.distance! < $1.distance!})
 
         // Uncomment the following line to preserve selection between presentations
@@ -56,10 +47,11 @@ class LocationsTableViewController: UITableViewController, CLLocationManagerDele
         
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
+        } else if locationManager.authorizationStatus == .authorizedWhenInUse {
+            latitude = locationManager.location?.coordinate.latitude
+            longitude = locationManager.location?.coordinate.longitude
+            curLocation = CLLocation(latitude: latitude!, longitude: longitude!)
         }
-        latitude = locationManager.location?.coordinate.latitude
-        longitude = locationManager.location?.coordinate.longitude
-        curLocation = CLLocation(latitude: latitude!, longitude: longitude!)
         
         locationList.append(LocationAnnotation(title: "Clayton M-City", subtitle: "7:00am - 11:00pm", supermarket: "w", lat: -37.9213586, long: 145.1398498, distance: calculateDistance(lat: -37.9213586, long: 145.1398498)))
         locationList.append(LocationAnnotation(title: "Clarinda", subtitle: "7:00am - 11:00pm", supermarket: "w", lat: -37.9405927, long: 145.1034342, distance: calculateDistance(lat: -37.9405927, long: 145.1034342)))
@@ -88,8 +80,11 @@ class LocationsTableViewController: UITableViewController, CLLocationManagerDele
     }
     
     func calculateDistance(lat: Double, long: Double) -> Double {
-        let location = CLLocation(latitude: lat, longitude: long)
-        let distance = location.distance(from: curLocation!)
+        var distance = 0.0
+        if let curLocation = curLocation {
+            let location = CLLocation(latitude: lat, longitude: long)
+            distance = location.distance(from: curLocation)
+        }
         return distance
     }
 
