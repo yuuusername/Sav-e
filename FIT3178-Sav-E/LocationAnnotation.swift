@@ -13,11 +13,17 @@ class LocationAnnotation: NSObject, MKAnnotation {
     var title: String?
     var subtitle: String?
     var supermarket: String?
+    var distance: Double?
     
-    init(title: String, subtitle: String, supermarket: String, lat: Double, long: Double) {
+    init(title: String, subtitle: String, supermarket: String, lat: Double, long: Double, distance: Double!) {
         self.title = title
-        self.subtitle = subtitle
+        if supermarket == "w" {
+            self.subtitle = "Woolworths Open: \(subtitle)"
+        } else {
+            self.subtitle = "IGA Open: \(subtitle)"
+        }
         self.supermarket = supermarket
         coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        self.distance = distance
     }
 }
