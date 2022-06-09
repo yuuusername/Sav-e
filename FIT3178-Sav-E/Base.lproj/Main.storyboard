@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BoD-yd-OXz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9uJ-lw-S7C">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
@@ -98,9 +98,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Grocery List" largeTitleDisplayMode="always" id="UTZ-Eh-D70">
-                        <barButtonItem key="leftBarButtonItem" title="Supermarkets Near Me" image="map" catalog="system" id="1Ak-Dh-UY0">
+                        <barButtonItem key="leftBarButtonItem" title="About" image="info.circle" catalog="system" id="1Ak-Dh-UY0">
                             <connections>
-                                <segue destination="fmR-p8-JKS" kind="show" id="nBO-b5-ykb"/>
+                                <segue destination="z5k-1b-0ng" kind="show" id="f5D-aH-9Eg"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="All Items" image="cart.badge.plus" catalog="system" id="gOV-Sb-alP">
@@ -112,7 +112,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lnJ-hm-dSu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1891.304347826087" y="75"/>
+            <point key="canvasLocation" x="4618.840579710145" y="8.7053571428571423"/>
         </scene>
         <!--Supermarkets Near Me-->
         <scene sceneID="Y25-bc-fHN">
@@ -123,16 +123,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Sle-2B-jPh">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                             </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RFQ-da-7DM"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Sle-2B-jPh" secondAttribute="bottom" id="AtM-NM-ojU"/>
-                            <constraint firstItem="Sle-2B-jPh" firstAttribute="leading" secondItem="Uus-0C-xeV" secondAttribute="leading" id="IPr-Us-1ux"/>
-                            <constraint firstAttribute="trailing" secondItem="Sle-2B-jPh" secondAttribute="trailing" id="d5t-yT-Dqf"/>
-                            <constraint firstItem="Sle-2B-jPh" firstAttribute="top" secondItem="Uus-0C-xeV" secondAttribute="topMargin" id="kt6-dh-A5J"/>
+                            <constraint firstItem="Sle-2B-jPh" firstAttribute="top" secondItem="Uus-0C-xeV" secondAttribute="top" id="8Tc-Jn-3N8"/>
+                            <constraint firstAttribute="trailing" secondItem="Sle-2B-jPh" secondAttribute="trailing" id="Utg-ca-THX"/>
+                            <constraint firstItem="RFQ-da-7DM" firstAttribute="bottom" secondItem="Sle-2B-jPh" secondAttribute="bottom" id="kS6-YN-201"/>
+                            <constraint firstItem="Sle-2B-jPh" firstAttribute="leading" secondItem="Uus-0C-xeV" secondAttribute="leading" id="r17-zx-0Jv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Supermarkets Near Me" id="8P2-Dl-FnE">
@@ -148,7 +148,91 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OLN-OL-hB8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2838" y="717"/>
+            <point key="canvasLocation" x="4623.188405797102" y="716.51785714285711"/>
+        </scene>
+        <!--About-->
+        <scene sceneID="4bs-jc-7MF">
+            <objects>
+                <viewController id="z5k-1b-0ng" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ytP-DJ-tdl">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ASb-d4-rqx">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0hp-1p-5wb">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="726"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This app utilises data provided by Woolworths Supermarkets and Independent Grocers of Australia Supermarkets" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3B-ro-eyu">
+                                                <rect key="frame" x="20" y="20" width="374" height="61"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This app utilises the following third-party code, use of which is hereby acknowledged." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P6X-kQ-Y1s">
+                                                <rect key="frame" x="20" y="101" width="374" height="41"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SwiftSoup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RY-Pi-cOk">
+                                                <rect key="frame" x="20" y="162" width="374" height="21"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="100" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zqx-Hf-oSw">
+                                                <rect key="frame" x="20" y="203" width="374" height="248.5"/>
+                                                <mutableString key="text">MIT LicenseCopyright (c) 2016 Nabil ChatbiPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</mutableString>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="9RY-Pi-cOk" secondAttribute="trailing" constant="20" id="6YH-cJ-M6g"/>
+                                            <constraint firstItem="Zqx-Hf-oSw" firstAttribute="leading" secondItem="0hp-1p-5wb" secondAttribute="leading" constant="20" id="A2g-rX-gkH"/>
+                                            <constraint firstItem="Zqx-Hf-oSw" firstAttribute="top" secondItem="9RY-Pi-cOk" secondAttribute="bottom" constant="20" id="FgT-tc-rBl"/>
+                                            <constraint firstItem="d3B-ro-eyu" firstAttribute="leading" secondItem="0hp-1p-5wb" secondAttribute="leading" constant="20" id="HIM-PQ-taJ"/>
+                                            <constraint firstItem="9RY-Pi-cOk" firstAttribute="leading" secondItem="0hp-1p-5wb" secondAttribute="leading" constant="20" id="IGd-tn-mSM"/>
+                                            <constraint firstAttribute="trailing" secondItem="P6X-kQ-Y1s" secondAttribute="trailing" constant="20" id="Opn-3Y-CWi"/>
+                                            <constraint firstItem="P6X-kQ-Y1s" firstAttribute="leading" secondItem="0hp-1p-5wb" secondAttribute="leading" constant="20" id="Si1-UR-ORH"/>
+                                            <constraint firstItem="d3B-ro-eyu" firstAttribute="top" secondItem="0hp-1p-5wb" secondAttribute="top" constant="20" id="Xym-BM-4KL"/>
+                                            <constraint firstAttribute="trailing" secondItem="Zqx-Hf-oSw" secondAttribute="trailing" constant="20" id="lK7-7A-aOy"/>
+                                            <constraint firstItem="9RY-Pi-cOk" firstAttribute="top" secondItem="P6X-kQ-Y1s" secondAttribute="bottom" constant="20" id="mY8-8M-nkY"/>
+                                            <constraint firstItem="P6X-kQ-Y1s" firstAttribute="top" secondItem="d3B-ro-eyu" secondAttribute="bottom" constant="20" id="yZk-oh-NKX"/>
+                                            <constraint firstAttribute="trailing" secondItem="d3B-ro-eyu" secondAttribute="trailing" constant="20" id="zfD-IO-nRY"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="0hp-1p-5wb" firstAttribute="height" secondItem="ASb-d4-rqx" secondAttribute="height" constant="1" id="Vgv-yC-tpH"/>
+                                    <constraint firstItem="0hp-1p-5wb" firstAttribute="width" secondItem="ASb-d4-rqx" secondAttribute="width" id="kl6-tq-hoN"/>
+                                    <constraint firstItem="0hp-1p-5wb" firstAttribute="top" secondItem="ASb-d4-rqx" secondAttribute="top" id="lui-SK-Zi3"/>
+                                    <constraint firstItem="0hp-1p-5wb" firstAttribute="leading" secondItem="ASb-d4-rqx" secondAttribute="leading" id="n68-yu-bpo"/>
+                                    <constraint firstAttribute="bottom" secondItem="0hp-1p-5wb" secondAttribute="bottom" id="pOB-dh-P3h"/>
+                                    <constraint firstAttribute="trailing" secondItem="0hp-1p-5wb" secondAttribute="trailing" id="ydF-aa-42S"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="r3M-mK-RiR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ASb-d4-rqx" firstAttribute="trailing" secondItem="r3M-mK-RiR" secondAttribute="trailing" id="1Yx-fk-iPJ"/>
+                            <constraint firstItem="ASb-d4-rqx" firstAttribute="top" secondItem="r3M-mK-RiR" secondAttribute="top" id="9pu-oR-Qdi"/>
+                            <constraint firstItem="ASb-d4-rqx" firstAttribute="leading" secondItem="r3M-mK-RiR" secondAttribute="leading" id="SVa-UL-Aaj"/>
+                            <constraint firstItem="ASb-d4-rqx" firstAttribute="height" secondItem="ytP-DJ-tdl" secondAttribute="height" multiplier="0.809152" id="fcV-Ll-TTq"/>
+                            <constraint firstItem="ASb-d4-rqx" firstAttribute="width" secondItem="ytP-DJ-tdl" secondAttribute="width" id="ji4-RD-Fzf"/>
+                            <constraint firstItem="ASb-d4-rqx" firstAttribute="bottom" secondItem="r3M-mK-RiR" secondAttribute="bottom" id="wzc-2X-gpd"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="About" id="o67-5n-JVL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sj5-dQ-nq4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5566.666666666667" y="43.526785714285715"/>
         </scene>
         <!--Supermarket List-->
         <scene sceneID="Obp-WQ-iqg">
@@ -192,7 +276,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0g9-gz-IXL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3783" y="717"/>
+            <point key="canvasLocation" x="5568.115942028986" y="716.51785714285711"/>
         </scene>
         <!--All Products-->
         <scene sceneID="U9l-rn-LLo">
@@ -265,25 +349,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pIe-Kb-suc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2839" y="-618"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="qcf-g2-Rrw">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="BoD-yd-OXz" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1Ph-va-AVJ">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="h1W-S0-IlN" kind="relationship" relationship="rootViewController" id="D1n-bO-7aY"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="w4v-NM-cYs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="981.15942028985512" y="75"/>
+            <point key="canvasLocation" x="5568" y="-603"/>
         </scene>
         <!--Compare Product-->
         <scene sceneID="iMZ-Fc-Fz8">
@@ -350,12 +416,72 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eMT-Sj-sgG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3784" y="-618"/>
+            <point key="canvasLocation" x="6513" y="-603"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Nbb-wY-jNz">
+            <objects>
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="9uJ-lw-S7C" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FrS-LQ-pGF">
+                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Obt-CS-VZW" kind="relationship" relationship="viewControllers" id="eje-iL-wDi"/>
+                        <segue destination="81Z-YZ-ydl" kind="relationship" relationship="viewControllers" id="sB0-Nb-ACv"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oJf-BG-qNw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2730" y="362"/>
+        </scene>
+        <!--Grocery List-->
+        <scene sceneID="5l5-lo-2Hj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Obt-CS-VZW" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Grocery List" image="list.bullet.rectangle.portrait.fill" catalog="system" selectedImage="list.bullet.rectangle.portrait.fill" id="2Jd-xm-BTN"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3rd-4z-HT7">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="h1W-S0-IlN" kind="relationship" relationship="rootViewController" id="aE6-Ma-gCN"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QQS-rC-aQG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3708.6956521739135" y="8.7053571428571423"/>
+        </scene>
+        <!--Supermarkets Near Me-->
+        <scene sceneID="4y1-WI-pJm">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="81Z-YZ-ydl" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Supermarkets Near Me" image="map.fill" catalog="system" selectedImage="map.fill" id="8Ef-7H-6kL"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="c0h-4p-ZzE">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="fmR-p8-JKS" kind="relationship" relationship="rootViewController" id="Y6l-GL-ShW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uCn-bE-Klw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3713.04347826087" y="716.51785714285711"/>
         </scene>
     </scenes>
     <resources>
         <image name="cart.badge.plus" catalog="system" width="128" height="106"/>
-        <image name="map" catalog="system" width="128" height="110"/>
+        <image name="info.circle" catalog="system" width="128" height="121"/>
+        <image name="list.bullet.rectangle.portrait.fill" catalog="system" width="115" height="128"/>
+        <image name="map.fill" catalog="system" width="128" height="110"/>
         <image name="mappin.circle" catalog="system" width="128" height="121"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
