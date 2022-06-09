@@ -117,15 +117,15 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             if grocery.woolworthsPrice > grocery.igaPrice {
                 cell.priceLabel.text = formatter.string(for: grocery.igaPrice)
                 cell.supermarketLabel.text = "IGA"
-                cell.priceLabel.textColor = UIColor(red: 0.60, green: 0.14, blue: 0.14, alpha: 1.00)
+                cell.priceLabel.textColor = UIColor(named: "IgaRed")
             } else if grocery.igaPrice > grocery.woolworthsPrice {
                 cell.priceLabel.text = formatter.string(for: grocery.woolworthsPrice)
                 cell.supermarketLabel.text = "Woolworths"
-                cell.priceLabel.textColor = UIColor(red: 0.07, green: 0.33, blue: 0.19, alpha: 1.00)
+                cell.priceLabel.textColor = UIColor(named: "WoolworthsGreen")
             } else {
                 cell.priceLabel.text = formatter.string(for: grocery.woolworthsPrice)
                 cell.supermarketLabel.text = "Both"
-                cell.priceLabel.textColor = UIColor(red: 0.55, green: 0.45, blue: 0.00, alpha: 1.00)
+                cell.priceLabel.textColor = UIColor(named: "MultiYellow")
             }
             return cell
         } else {

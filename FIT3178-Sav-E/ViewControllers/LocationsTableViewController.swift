@@ -106,9 +106,9 @@ class LocationsTableViewController: UITableViewController, CLLocationManagerDele
         var content = cell.defaultContentConfiguration()
         content.text = location.title
         if location.supermarket == "i" {
-            content.textProperties.color = UIColor(red: 0.60, green: 0.14, blue: 0.14, alpha: 1.00)
+            content.textProperties.color = UIColor(named: "IgaRed")!
         } else {
-            content.textProperties.color = UIColor(red: 0.07, green: 0.33, blue: 0.19, alpha: 1.00)
+            content.textProperties.color = UIColor(named: "WoolworthsGreen")!
         }
         content.secondaryText = location.subtitle
         cell.contentConfiguration = content
