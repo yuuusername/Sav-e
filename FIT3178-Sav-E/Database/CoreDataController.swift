@@ -16,6 +16,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     var listItemsFetchedResultsController: NSFetchedResultsController<Product>?
     
     override init() {
+        // Load the core data stack
         persistentContainer = NSPersistentContainer(name: "Sav_E-DataModel")
         persistentContainer.loadPersistentStores() { (description, error) in
             if let error = error{
@@ -29,6 +30,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     lazy var defaultList: List = {
         var lists = [List]()
         
+        // Request for the list in core data of name Default List
         let request: NSFetchRequest<List> = List.fetchRequest()
         let predicate = NSPredicate(format: "name = %@", DEFAULT_LIST_NAME)
         request.predicate = predicate
@@ -39,6 +41,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
             print("Fetch Request Failed: \(error)")
         }
         
+        // Check if the first list exists in lists else make a list
         if let firstList = lists.first {
             return firstList
         }
@@ -70,8 +73,12 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
     }
     
     func fetchAllItems() -> [Product] {
+        // Query core data to retrieve all product entities in persistent memory
+        // Watch for all changes within the database, lets core data controller and listeners know
         if allItemsFetchedResultsController == nil {
+            // Fetch request
             let request: NSFetchRequest<Product> = Product.fetchRequest()
+            // Will sort by name
             let nameSortDescriptor = NSSortDescriptor(key: "name", ascending: true)
             request.sortDescriptors = [nameSortDescriptor]
             
@@ -117,6 +124,7 @@ class CoreDataController: NSObject, DatabaseProtocol, NSFetchedResultsController
         list.removeFromItems(item)
     }
     
+    // defines how to get list results only for Default List for coredata
     func fetchListItems() -> [Product] {
         if listItemsFetchedResultsController == nil {
             let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()

@@ -102,6 +102,7 @@
 				FC6E052C284DD69D00108224 /* DataModel */,
 				FC6E0547284DF4F600108224 /* ViewControllers */,
 				FCBF9B19284F383C007E394A /* LocationAnnotation.swift */,
+				FC7B0D5B284E3C2D00E7EA7B /* ProductTableViewCell.swift */,
 				A8AC94AF281FA4F400B68907 /* ProductCountTableViewCell.swift */,
 				FC4ADD2428200FCA00DF95C6 /* AddProductDelegate.swift */,
 				FCA879A32848FEE100E1A611 /* CompareProductDelegate.swift */,
@@ -114,7 +115,6 @@
 				A842DC6D2818F98E00285445 /* Assets.xcassets */,
 				A842DC6F2818F98E00285445 /* LaunchScreen.storyboard */,
 				A842DC722818F98E00285445 /* Info.plist */,
-				FC7B0D5B284E3C2D00E7EA7B /* ProductTableViewCell.swift */,
 			);
 			path = "FIT3178-Sav-E";
 			sourceTree = "<group>";

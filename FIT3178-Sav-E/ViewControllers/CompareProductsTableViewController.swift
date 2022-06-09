@@ -8,6 +8,7 @@
 import UIKit
 import SwiftSoup
 
+
 extension UIViewController {
     func displayMessage(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -15,7 +16,7 @@ extension UIViewController {
         self.present(alertController, animated: true,completion: nil)
     }
 }
-
+// For SwiftSoup decoder
 struct igaItem {
     var name: String
     var price: Double
@@ -44,6 +45,7 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
     
     override func viewDidLoad() {
         
+        // Add search bar controller
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -68,6 +70,7 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
         databaseController = appDelegate?.databaseController
     }
     
+    // Populate table with the product just selected for ease of comparison
     func compareProduct(_ newProduct: ItemData) {
         products.removeAll()
         tableView.reloadData()
@@ -81,7 +84,9 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
         }
     }
     
+    // Queries IGA API for list of items requested
     func requestItemsNamed(_ itemName: String) async {
+        // Build request URL
         var searchURLComponents = URLComponents()
         searchURLComponents.scheme = "https"
         searchURLComponents.host = "new.igashop.com.au"
@@ -107,6 +112,7 @@ class CompareProductsTableViewController: UITableViewController, UISearchBarDele
                 self.indicator.stopAnimating()
             }
             do {
+                // Get SwiftSoup to parse HTML/CSS elements
                 let doc: Document = try SwiftSoup.parse(htmlString)
                 
                 let cardElements = try doc.select("article:nth-child(1)")

@@ -20,12 +20,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         // Do any additional setup after loading the view.
         
         locationManager.delegate = self
-        
+        // Check if location permission is granted
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
         }
     }
     
+    // Where map should focus on
     func focusOn(annotation: MKAnnotation) {
         mapView.selectAnnotation(annotation, animated: true)
         let zoomRegion = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)

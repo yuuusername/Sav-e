@@ -25,6 +25,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     override func viewDidLoad() {
         appDelegate.woolworthsItems.removeAll()
         
+        // Add search bar controller
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -48,11 +49,14 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Store for future view compare products table view
         appDelegate.compItemData = appDelegate.woolworthsItems[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    // Querying from Woolworths API
     func requestItemsNamed(_ itemName: String) async {
+        // Prepare URL request
         var searchURLComponents = URLComponents()
         searchURLComponents.scheme = "https"
         searchURLComponents.host = "www.woolworths.com.au"
@@ -76,6 +80,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
                 self.indicator.stopAnimating()
             }
             do {
+                // Decode JSON
                 let decoder = JSONDecoder()
                 let productsData = try decoder.decode(ProductsData.self, from: data)
                 if let items = productsData.products {
@@ -130,6 +135,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
         //configure and return a product cell
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ITEM, for: indexPath)
         let item = appDelegate.woolworthsItems[indexPath.row]
+        // Formatter for dollar format
         let formatter = NumberFormatter()
         formatter.locale = Locale.current
         formatter.numberStyle = .currency
@@ -138,6 +144,7 @@ class AllProductsTableViewController: UITableViewController, UISearchBarDelegate
         var content = cell.defaultContentConfiguration()
         if item.price != nil {
             content.text = item.name
+            // Sometimes products can be out of stock, woolworths keeps two prices, if price variable is unavaliable then wasPrice is used
             if item.price == 0.0 {
                 content.secondaryText = formatter.string(for: item.wasPrice!)
             } else {

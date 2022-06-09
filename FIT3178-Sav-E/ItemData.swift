@@ -27,6 +27,7 @@ class ItemData: NSObject, Decodable {
         // Get item info
         if let productArray = try? itemContainer.decode([ProductDetails].self, forKey: .Products) {
             for code in productArray {
+                // When a product is out of stock, the price is stored as nill. Woolworths stores the old price in wasPrice. This checks for this case
                 if code.Price != nil {
                     name = code.DisplayName
                     price = code.Price

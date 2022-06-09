@@ -26,6 +26,7 @@ class LocationsTableViewController: UITableViewController, CLLocationManagerDele
         igaLocations()
         super.viewDidLoad()
         
+        // Sort table by current distance from location
         self.locationList.sort(by: {$0.distance! < $1.distance!})
 
         // Uncomment the following line to preserve selection between presentations
@@ -37,12 +38,14 @@ class LocationsTableViewController: UITableViewController, CLLocationManagerDele
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Make sure the table is the first time appearing to add annotations
         if isFirstViewApperance {
             mapViewController?.mapView.addAnnotations(locationList)
             isFirstViewApperance = false
         }
     }
     
+    // Setting all woolworths locations
     func woolworthsLocations() {locationManager.delegate = self
         
         if locationManager.authorizationStatus == .notDetermined {
@@ -65,6 +68,7 @@ class LocationsTableViewController: UITableViewController, CLLocationManagerDele
         locationList.append(LocationAnnotation(title: "Waverley Gardens (Mulgrave)", subtitle: "7:00am - 11:00pm", supermarket: "w", lat: -37.9356063, long: 145.1893668, distance: calculateDistance(lat: -37.9356063, long: 145.1893668)))
     }
     
+    // Setting all IGA locations
     func igaLocations() {
         locationList.append(LocationAnnotation(title: "Bentleigh", subtitle: "7:30am - 9:30pm", supermarket: "i", lat: -37.9257837, long: 145.0343498, distance: calculateDistance(lat: -37.9257837, long: 145.0343498)))
         locationList.append(LocationAnnotation(title: "Malvern", subtitle: "7:00am - 9:00pm", supermarket: "i", lat: -37.8533982, long: 145.0414816, distance: calculateDistance(lat: -37.8533982, long: 145.0414816)))

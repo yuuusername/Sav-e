@@ -24,18 +24,13 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     override func viewDidLoad() {
         //testProducts()
         super.viewDidLoad()
-        
-        if let response = UserDefaults.standard.string(forKey: "response") {
-            print("There was a stored response: \(response)")
-        } else {
-            print("No stored response")
-        }
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         databaseController = appDelegate?.databaseController
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Checking if the item just added was on special
         specialCheck()
         appDelegate.addedItem = nil
         databaseController?.addListener(listener: self)
@@ -61,6 +56,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
             return
         }
         
+        // Formatter for dollar format
         let formatter = NumberFormatter()
         formatter.locale = Locale.current
         formatter.numberStyle = .currency

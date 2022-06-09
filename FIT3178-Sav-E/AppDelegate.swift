@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         databaseController = CoreDataController()
+        // Set up local notifications given if notifications are enabled/ else ask
         let notificationCenter = UNUserNotificationCenter.current()
         
         notificationCenter.getNotificationSettings { notificationSettings in
@@ -46,12 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.delegate = self
         
-        let acceptAction = UNNotificationAction(identifier: "accept", title: "Accept", options: .foreground)
-        let declineAction = UNNotificationAction(identifier: "decline", title: "Decline", options: .destructive)
-        let commentAction = UNTextInputNotificationAction(identifier: "comment", title: "Comment", options: .authenticationRequired, textInputButtonTitle: "Send", textInputPlaceholder: "Share your thoughts..")
-        
         // Set up the category
-        let appCategory = UNNotificationCategory(identifier: AppDelegate.CATEGORY_IDENTIFIER, actions: [acceptAction, declineAction, commentAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        let appCategory = UNNotificationCategory(identifier: AppDelegate.CATEGORY_IDENTIFIER, actions: [], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
         
         // Register the category just created with the notification centre
         notificationCenter.setNotificationCategories([appCategory])
@@ -82,28 +79,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // By default iOS will silence a notification if the application is in the foreground. We can over-ride this with the following
         completionHandler([.banner])
     }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        if response.notification.request.content.categoryIdentifier == AppDelegate.CATEGORY_IDENTIFIER {
-            switch response.actionIdentifier {
-                case "accept":
-                    print("accepted")
-                case "decline":
-                    print("declined")
-                case "comment":
-                    if let userResponse = response as? UNTextInputNotificationResponse {
-                        print("Response: \(userResponse.userText)")
-                        UserDefaults.standard.set(userResponse.userText, forKey: "response")
-                    }
-                default:
-                    print("other")
-            }
-        }
-        else {
-            print("General notification")
-        }
-        completionHandler()
-    }
-
 }
 
