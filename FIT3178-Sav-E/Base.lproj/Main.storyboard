@@ -184,7 +184,13 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="100" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zqx-Hf-oSw">
                                                 <rect key="frame" x="20" y="203" width="374" height="248.5"/>
-                                                <mutableString key="text">MIT LicenseCopyright (c) 2016 Nabil ChatbiPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</mutableString>
+                                                <string key="text">MIT License
+
+Copyright (c) 2016 Nabil Chatbi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -223,7 +229,7 @@
                             <constraint firstItem="ASb-d4-rqx" firstAttribute="trailing" secondItem="r3M-mK-RiR" secondAttribute="trailing" id="1Yx-fk-iPJ"/>
                             <constraint firstItem="ASb-d4-rqx" firstAttribute="top" secondItem="r3M-mK-RiR" secondAttribute="top" id="9pu-oR-Qdi"/>
                             <constraint firstItem="ASb-d4-rqx" firstAttribute="leading" secondItem="r3M-mK-RiR" secondAttribute="leading" id="SVa-UL-Aaj"/>
-                            <constraint firstItem="ASb-d4-rqx" firstAttribute="height" secondItem="ytP-DJ-tdl" secondAttribute="height" multiplier="0.809152" id="fcV-Ll-TTq"/>
+                            <constraint firstItem="ASb-d4-rqx" firstAttribute="height" secondItem="r3M-mK-RiR" secondAttribute="height" id="fcV-Ll-TTq"/>
                             <constraint firstItem="ASb-d4-rqx" firstAttribute="width" secondItem="ytP-DJ-tdl" secondAttribute="width" id="ji4-RD-Fzf"/>
                             <constraint firstItem="ASb-d4-rqx" firstAttribute="bottom" secondItem="r3M-mK-RiR" secondAttribute="bottom" id="wzc-2X-gpd"/>
                         </constraints>
