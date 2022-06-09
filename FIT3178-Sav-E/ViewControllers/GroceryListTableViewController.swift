@@ -37,6 +37,7 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         specialCheck()
+        appDelegate.addedItem = nil
         databaseController?.addListener(listener: self)
     }
     
@@ -68,13 +69,13 @@ class GroceryListTableViewController: UITableViewController, DatabaseListener {
         
         if let itemAdded = appDelegate.addedItem {
             if itemAdded.woolworthsPrice < itemAdded.igaPrice && itemAdded.woolworthsPrice/itemAdded.igaPrice <= 0.5 {
-                content.title = "\(itemAdded.name ?? "The item you just added") is half price!"
+                content.title = "\(itemAdded.name ?? "The item you just added") is on special!"
                 content.body = "\(itemAdded.name ?? "The item") is now \(formatter.string(for: itemAdded.woolworthsPrice) ?? "on sale") at Woolworths!"
                 let request = UNNotificationRequest(identifier: GroceryListTableViewController.NOTIFICATION_IDENTIFIER, content: content, trigger: trigger)
                 UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
                 print("Notification sent")
             } else if itemAdded.igaPrice < itemAdded.woolworthsPrice && itemAdded.igaPrice/itemAdded.woolworthsPrice <= 0.5 {
-                content.title = "\(itemAdded.name ?? "The item you just added") is half price!"
+                content.title = "\(itemAdded.name ?? "The item you just added") is on special!"
                 content.body = "\(itemAdded.name ?? "The item") is now \(formatter.string(for: itemAdded.igaPrice) ?? "on sale") at IGA!"
                 let request = UNNotificationRequest(identifier: GroceryListTableViewController.NOTIFICATION_IDENTIFIER, content: content, trigger: trigger)
                 UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
