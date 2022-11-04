@@ -19,7 +19,7 @@ If there aren't any direct alternatives to the product from another supermarket,
 Support for other supermarkets isn't planned for now
 
 ## Background.
-This project was initially a part of a university project. I may want to continue developing the application in the future to support mroe supermarkets and features.
+This project was initially a part of a university project done in about 2 months. I may want to continue developing the application in the future to support mroe supermarkets and features.
 
 ## Unfinished Stuff.
 To begin, I've always had in mind to compare the two giants, Woolworths and Coles. Unfortunatly, since I'm working with API endpoints, the process becomes a lot more... difficult to say the least. Fortunatly, Woolworths has clear and distinct pattern and actual structure to their APIs, whereas Coles is very... robust, quering with their API is very difficult and with the time constraints I had at the time, I wasn't able to figure out why the API was so bad and how to implement it into the app; it was simply easier to just give up and go for another supermarket's API (IGA in this case).
